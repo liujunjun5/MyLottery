@@ -1,5 +1,7 @@
 package com.helloLottery.rpc.dto;
 
+import java.util.Date;
+
 /**
  * @author lj
  * 活动DTO
@@ -8,8 +10,11 @@ public class ActivityDto {
     private Long activityId;
     private String activityName;
     private String activityDesc;
-    private String beginDateTime;
-    private String endDateTime;
+    // 开始时间
+    private Date beginDateTime;
+
+    // 结束时间
+    private Date endDateTime;
     private Integer stockCount;
     /**
      * 用户可抽奖次数
@@ -44,19 +49,19 @@ public class ActivityDto {
         this.activityDesc = activityDesc;
     }
 
-    public String getBeginDateTime() {
+    public Date getBeginDateTime() {
         return beginDateTime;
     }
 
-    public void setBeginDateTime(String beginDateTime) {
+    public void setBeginDateTime(Date beginDateTime) {
         this.beginDateTime = beginDateTime;
     }
 
-    public String getEndDateTime() {
+    public Date getEndDateTime() {
         return endDateTime;
     }
 
-    public void setEndDateTime(String endDateTime) {
+    public void setEndDateTime(Date endDateTime) {
         this.endDateTime = endDateTime;
     }
 
