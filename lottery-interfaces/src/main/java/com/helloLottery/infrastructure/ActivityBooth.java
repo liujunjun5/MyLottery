@@ -8,7 +8,7 @@ import com.helloLottery.rpc.req.ActivityReq;
 import com.helloLottery.rpc.res.ActivityRes;
 import com.hellolottery.common.Constants;
 import com.hellolottery.common.Result;
-import org.springframework.stereotype.Service;
+import org.apache.dubbo.config.annotation.Service;
 
 import javax.annotation.Resource;
 
