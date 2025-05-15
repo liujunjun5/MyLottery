@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public abstract class BaseAlgorithm implements IDrawAlgorithm {
     // 斐波那契散列增量，逻辑：黄金分割点：(√5 - 1) / 2 = 0.6180339887，Math.pow(2, 32) * 0.6180339887 = 0x61c88647
-    // 是一个无理数 均匀覆盖无周期性
+    // 均匀覆盖无周期性、互质与2^m
     private final int HASH_INCREMENT = 0x61c88647;
 
     // 数组初始化长度
@@ -32,6 +32,7 @@ public abstract class BaseAlgorithm implements IDrawAlgorithm {
         // 初始化元组
         String[] rateTuple = rateTupleMap.computeIfAbsent(strategyId, k->new String[RATE_TUPLE_LENGTH]);
 
+        // 互质的数只有1
         int cursor = 0;
         for (AwardRateInfo awardRateInfo : awardRateInfoList) {
             int rate = awardRateInfo.getAwardRate().multiply(new BigDecimal(100)).intValue();
