@@ -1,8 +1,8 @@
 package com.helloLottery.test;
 
 import com.alibaba.fastjson.JSON;
-import com.helloLottery.infrastructure.dao.IActivityDao;
-import com.helloLottery.infrastructure.po.Activity;
+import com.helloLottery.interfaces.dao.IActivityDao;
+import com.helloLottery.interfaces.po.Activity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -42,4 +42,8 @@ public class ApiTest {
         Activity activity = activityDao.queryActivityById(100001L);
         logger.info("测试结果：{}", JSON.toJSONString(activity));
     }
+
+
 }
+
+//class Draw
