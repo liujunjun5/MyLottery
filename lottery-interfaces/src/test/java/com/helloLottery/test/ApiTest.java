@@ -1,8 +1,10 @@
 package com.helloLottery.test;
 
 import com.alibaba.fastjson.JSON;
-import com.helloLottery.interfaces.dao.IActivityDao;
-import com.helloLottery.interfaces.po.Activity;
+import com.helloLottery.domain.strategy.model.req.DrawReq;
+import com.helloLottery.domain.strategy.service.draw.IDrawExec;
+import com.helloLottery.infrastructure.dao.IActivityDao;
+import com.helloLottery.infrastructure.po.Activity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -18,6 +20,9 @@ import java.util.Date;
 public class ApiTest {
 
     private Logger logger = LoggerFactory.getLogger(ApiTest.class);
+
+    @Resource(name = "drawExec")
+    IDrawExec drawExec;
 
     @Resource
     IActivityDao activityDao;
@@ -43,6 +48,11 @@ public class ApiTest {
         logger.info("测试结果：{}", JSON.toJSONString(activity));
     }
 
+
+    @Test
+    public void test_drawExec() {
+        drawExec.doDrawExec(new DrawReq("lj", 10001L));
+    }
 
 }
 
