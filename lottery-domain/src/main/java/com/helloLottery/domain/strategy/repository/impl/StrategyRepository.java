@@ -2,12 +2,12 @@ package com.helloLottery.domain.strategy.repository.impl;
 
 import com.helloLottery.domain.strategy.model.aggregates.StrategyRich;
 import com.helloLottery.domain.strategy.repository.IStrategyRepository;
-import com.helloLottery.interfaces.dao.IAwardDao;
-import com.helloLottery.interfaces.dao.IStrategyDao;
-import com.helloLottery.interfaces.dao.IStrategyDetailDao;
-import com.helloLottery.interfaces.po.Award;
-import com.helloLottery.interfaces.po.Strategy;
-import com.helloLottery.interfaces.po.StrategyDetail;
+import com.helloLottery.infrastructure.dao.IAwardDao;
+import com.helloLottery.infrastructure.dao.IStrategyDao;
+import com.helloLottery.infrastructure.dao.IStrategyDetailDao;
+import com.helloLottery.infrastructure.po.Award;
+import com.helloLottery.infrastructure.po.Strategy;
+import com.helloLottery.infrastructure.po.StrategyDetail;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;

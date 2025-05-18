@@ -1,6 +1,6 @@
-package com.helloLottery.interfaces.dao;
+package com.helloLottery.infrastructure.dao;
 
-import com.helloLottery.interfaces.po.StrategyDetail;
+import com.helloLottery.infrastructure.po.StrategyDetail;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

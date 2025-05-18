@@ -1,7 +1,7 @@
 package com.helloLottery.domain.strategy.model.aggregates;
 
-import com.helloLottery.interfaces.po.Strategy;
-import com.helloLottery.interfaces.po.StrategyDetail;
+import com.helloLottery.infrastructure.po.Strategy;
+import com.helloLottery.infrastructure.po.StrategyDetail;
 
 import java.util.List;
 

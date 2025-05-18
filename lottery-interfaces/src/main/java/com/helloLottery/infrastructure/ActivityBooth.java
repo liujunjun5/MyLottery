@@ -1,7 +1,7 @@
-package com.helloLottery.interfaces;
+package com.helloLottery.infrastructure;
 
-import com.helloLottery.interfaces.dao.IActivityDao;
-import com.helloLottery.interfaces.po.Activity;
+import com.helloLottery.infrastructure.dao.IActivityDao;
+import com.helloLottery.infrastructure.po.Activity;
 import com.helloLottery.rpc.IAcitivityBooth;
 import com.helloLottery.rpc.dto.ActivityDto;
 import com.helloLottery.rpc.req.ActivityReq;

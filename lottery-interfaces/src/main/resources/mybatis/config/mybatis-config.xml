@@ -4,6 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <typeAliases>
-        <package name="com.helloLottery.interfaces.po.Activity"/>
+        <package name="com.helloLottery.infrastructure.po.Activity"/>
     </typeAliases>
 </configuration>

@@ -1,4 +1,4 @@
-package com.helloLottery.interfaces.po;
+package com.helloLottery.infrastructure.po;
 
 import java.util.Date;
 

@@ -1,4 +1,4 @@
-package com.helloLottery.interfaces.po;
+package com.helloLottery.infrastructure.po;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -11,6 +11,10 @@ public class StrategyDetail {
     private Long strategyId;
     private String awardId;
     private String awardCount;
+    /**
+     * 奖品名称
+     */
+    private String awardName;
     /**
      * 奖品剩余库存
      */
@@ -81,5 +85,13 @@ public class StrategyDetail {
 
     public void setAwardSurplusCount(Integer awardSurplusCount) {
         this.awardSurplusCount = awardSurplusCount;
+    }
+
+    public String getAwardName() {
+        return awardName;
+    }
+
+    public void setAwardName(String awardName) {
+        this.awardName = awardName;
     }
 }

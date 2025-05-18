@@ -6,9 +6,9 @@ import com.helloLottery.domain.strategy.model.res.DrawResult;
 import com.helloLottery.domain.strategy.model.vo.AwardRateInfo;
 import com.helloLottery.domain.strategy.model.vo.DrawAwardInfo;
 import com.helloLottery.domain.strategy.service.algorithm.IDrawAlgorithm;
-import com.helloLottery.interfaces.po.Award;
-import com.helloLottery.interfaces.po.Strategy;
-import com.helloLottery.interfaces.po.StrategyDetail;
+import com.helloLottery.infrastructure.po.Award;
+import com.helloLottery.infrastructure.po.Strategy;
+import com.helloLottery.infrastructure.po.StrategyDetail;
 import com.hellolottery.common.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +67,10 @@ public abstract class AbstractDrawBase extends DrawStrategySupport implements ID
      */
     private void checkAndInitRateData(Long strategyId, List<StrategyDetail> strategyDetailList, Integer strategyMode) {
         // 不是使用元组初始化的
-        if (strategyMode != 1) {
+//        if (strategyMode != 1) {
+//            return;
+//        }
+        if (!strategyMode.equals(Constants.StrategyMode.SINGLE.getCode())) {
             return;
         }
         // 已经初始化完了

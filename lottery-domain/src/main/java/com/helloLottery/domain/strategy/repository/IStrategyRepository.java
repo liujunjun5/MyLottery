@@ -1,7 +1,7 @@
 package com.helloLottery.domain.strategy.repository;
 
 import com.helloLottery.domain.strategy.model.aggregates.StrategyRich;
-import com.helloLottery.interfaces.po.Award;
+import com.helloLottery.infrastructure.po.Award;
 import java.util.List;
 /**
  * @author lj
