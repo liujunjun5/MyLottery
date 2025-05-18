@@ -3,11 +3,18 @@ package com.helloLottery.interfaces.po;
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * @author lj
+ */
 public class StrategyDetail {
     private Long id;
     private Long strategyId;
     private String awardId;
     private String awardCount;
+    /**
+     * 奖品剩余库存
+     */
+    private Integer awardSurplusCount;
     private BigDecimal awardRate;
     private Date createTime;
     private Date updateTime;
@@ -66,5 +73,13 @@ public class StrategyDetail {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getAwardSurplusCount() {
+        return awardSurplusCount;
+    }
+
+    public void setAwardSurplusCount(Integer awardSurplusCount) {
+        this.awardSurplusCount = awardSurplusCount;
     }
 }
