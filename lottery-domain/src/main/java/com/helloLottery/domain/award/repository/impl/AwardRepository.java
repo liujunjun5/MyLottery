@@ -1,4 +1,8 @@
 package com.helloLottery.domain.award.repository.impl;
 
-public class AwardRepository {
+import com.helloLottery.domain.award.repository.IAwardRepository;
+import org.springframework.stereotype.Component;
+
+@Component
+public class AwardRepository implements IAwardRepository {
 }

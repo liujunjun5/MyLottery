@@ -61,9 +61,9 @@ public abstract class AbstractDrawBase extends DrawStrategySupport implements ID
     /**
      * 校验抽奖策略是否已经被初始化到内存
      *
-     * @param strategyId
-     * @param strategyDetailList
-     * @param strategyMode
+     * @param strategyId         抽奖策略ID
+     * @param strategyMode       抽奖策略模式
+     * @param strategyDetailList 抽奖策略详情
      */
     private void checkAndInitRateData(Long strategyId, List<StrategyDetail> strategyDetailList, Integer strategyMode) {
         // 不是使用元组初始化的
@@ -98,9 +98,13 @@ public abstract class AbstractDrawBase extends DrawStrategySupport implements ID
      * @return 中奖结果
      */
     private DrawResult buildDrawResult(String uId, Long strategyId, String awardId) {
+        if (null == awardId) {
+            logger.info("执行策略抽奖完成【未中奖】，用户：{} 策略ID：{}", uId, strategyId);
+            return new DrawResult(uId, strategyId, Constants.DrawState.FAIL.getCode());
+        }
         Award awardInfo = super.queryAwardInfoByAwardId(awardId);
         logger.info("抽奖结果如下，用户:{},策略id:{},奖品id:{},奖品名称:{}", uId, strategyId, awardId, awardInfo.getAwardName());
-        DrawAwardInfo drawAwardInfo = new DrawAwardInfo(awardId, awardInfo.getAwardName());
+        DrawAwardInfo drawAwardInfo = new DrawAwardInfo(awardId, awardInfo.getAwardType(), awardInfo.getAwardName(), awardInfo.getAwardContent());
         return new DrawResult(uId, strategyId, Constants.DrawState.SUCCESS.getCode(), drawAwardInfo);
     }
 }
