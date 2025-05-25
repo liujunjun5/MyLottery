@@ -12,6 +12,7 @@ import com.helloLottery.infrastructure.po.Strategy;
 import com.helloLottery.infrastructure.po.StrategyDetail;
 import com.hellolottery.common.Constants;
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import java.util.List;
  * @description: 活动领域仓储实现类
  * @date 2025/5/25 10:55
  */
+@Component
 public class ActivityRepository implements IActivityRepository {
 
     @Resource
