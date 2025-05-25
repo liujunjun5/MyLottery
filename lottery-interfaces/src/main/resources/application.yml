@@ -5,12 +5,23 @@ spring:
   datasource:
     username: root
     password: aaa123
-    url: jdbc:mysql://localhost:3306/lottery?useUnicode=true
+    url: jdbc:mysql://localhost:3306/lottery?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
     driver-class-name: com.mysql.jdbc.Driver
-
+logging:
+  level:
+    # 打印执行的SQL及参数
+    com.helloLottery.infrastructure.dao: DEBUG
+    # 如果需要更详细日志（结果集、参数）
+    org.apache.ibatis: TRACE
+    # JDBC 底层日志（可选）
+    java.sql.Connection: DEBUG
+    java.sql.Statement: DEBUG
+    java.sql.PreparedStatement: DEBUG
 mybatis:
   mapper-locations: classpath:/mybatis/mapper/*.xml
   config-location:  classpath:/mybatis/config/mybatis-config.xml
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 # Dubbo 广播方式配置
 dubbo:
