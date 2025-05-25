@@ -5,6 +5,7 @@ import com.helloLottery.domain.strategy.model.vo.DrawAwardInfo;
 
 import java.util.List;
 /**
+ * @description 策略领域的仓储服务
  * @author lj
  */
 public interface IStrategyRepository {

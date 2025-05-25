@@ -1,7 +1,5 @@
 package com.helloLottery.infrastructure.repository;
 
-import cn.hutool.core.bean.BeanUtil;
-import com.helloLottery.domain.activity.model.vo.StrategyDetailVO;
 import com.helloLottery.domain.activity.model.vo.StrategyVO;
 import com.helloLottery.domain.strategy.model.aggregates.StrategyRich;
 import com.helloLottery.domain.strategy.model.vo.DrawAwardInfo;
@@ -14,7 +12,6 @@ import com.helloLottery.infrastructure.po.Award;
 import com.helloLottery.infrastructure.po.Strategy;
 import com.helloLottery.infrastructure.po.StrategyDetail;
 import org.springframework.beans.BeanUtils;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
