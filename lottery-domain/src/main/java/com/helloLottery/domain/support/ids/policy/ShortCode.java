@@ -1,6 +1,7 @@
 package com.helloLottery.domain.support.ids.policy;
 
 import com.helloLottery.domain.support.ids.IIdGenerator;
+import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
 import java.util.Random;
@@ -10,6 +11,7 @@ import java.util.Random;
  * @description: 拼接年月日随机数字生成编号，适用于数据量不大的活动id
  * @date 2025/5/27 9:47
  */
+@Component
 public class ShortCode implements IIdGenerator {
     @Override
     public long nextId() {
