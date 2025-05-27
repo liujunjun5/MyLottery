@@ -1,19 +1,20 @@
 package com.helloLottery.domain.strategy.model.aggregates;
 
-import com.helloLottery.infrastructure.po.Strategy;
-import com.helloLottery.infrastructure.po.StrategyDetail;
+import com.helloLottery.domain.activity.model.vo.StrategyVO;
+import com.helloLottery.domain.strategy.model.vo.StrategyDetailBriefVO;
+
 
 import java.util.List;
 
 public class StrategyRich {
     private Long strategyId;
-    private Strategy strategy;
-    private List<StrategyDetail> strategyDetailList;
+    private StrategyVO strategy;
+    private List<StrategyDetailBriefVO> strategyDetailList;
 
     public StrategyRich() {
     }
 
-    public StrategyRich(Long strategyId, Strategy strategy, List<StrategyDetail> strategyDetailList) {
+    public StrategyRich(Long strategyId, StrategyVO strategy, List<StrategyDetailBriefVO> strategyDetailList) {
         this.strategyId = strategyId;
         this.strategy = strategy;
         this.strategyDetailList = strategyDetailList;
@@ -27,19 +28,19 @@ public class StrategyRich {
         this.strategyId = strategyId;
     }
 
-    public Strategy getStrategy() {
+    public StrategyVO getStrategy() {
         return strategy;
     }
 
-    public void setStrategy(Strategy strategy) {
+    public void setStrategy(StrategyVO strategy) {
         this.strategy = strategy;
     }
 
-    public List<StrategyDetail> getStrategyDetailList() {
+    public List<StrategyDetailBriefVO> getStrategyDetailList() {
         return strategyDetailList;
     }
 
-    public void setStrategyDetailList(List<StrategyDetail> strategyDetailList) {
+    public void setStrategyDetailList(List<StrategyDetailBriefVO> strategyDetailList) {
         this.strategyDetailList = strategyDetailList;
     }
 }

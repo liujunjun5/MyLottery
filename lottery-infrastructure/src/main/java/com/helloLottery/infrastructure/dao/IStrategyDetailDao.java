@@ -27,4 +27,12 @@ public interface IStrategyDetailDao {
      * @return
      */
     int deductStock(StrategyDetail strategyDetailReq);
+
+    /***
+     * @description: 插入策略明细
+     * @param: list
+     * @author liujun
+     * @date: 2025/5/25 11:02
+     */
+    void insertList(List<StrategyDetail> list);
 }
