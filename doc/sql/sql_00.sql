@@ -14,6 +14,9 @@
  Date: 05/25/2025 16:24:34
 */
 
+
+create database lottery;
+
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
@@ -36,13 +39,13 @@ CREATE TABLE `activity` (
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_activity_id` (`activity_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='活动配置';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='活动配置';
 
 -- ----------------------------
 -- Records of activity
 -- ----------------------------
 BEGIN;
-INSERT INTO `activity` VALUES (1, 100001, '活动名', '测试活动', '2025-08-08 20:14:50', '2025-08-08 20:14:50', 100, 10, 0, 'xiaofuge', '2025-08-08 20:14:50', '2025-08-08 20:14:50');
+INSERT INTO `activity` VALUES (1, 100001, '活动名', '测试活动', '2025-08-08 20:14:50', '2025-08-08 20:14:50', 100, 10, 1, 'xiaofuge', '2025-08-08 20:14:50', '2025-08-08 20:14:50');
 COMMIT;
 
 -- ----------------------------
@@ -57,8 +60,9 @@ CREATE TABLE `award` (
   `award_content` varchar(128) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '奖品内容「文字描述、Key、码」',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='奖品配置';
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_award_id` (`award_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='奖品配置';
 
 -- ----------------------------
 -- Records of award
@@ -87,7 +91,7 @@ CREATE TABLE `strategy` (
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `strategy_strategyId_uindex` (`strategy_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='策略配置';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='策略配置';
 
 -- ----------------------------
 -- Records of strategy
@@ -111,7 +115,7 @@ CREATE TABLE `strategy_detail` (
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='策略明细';
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='策略明细';
 
 -- ----------------------------
 -- Records of strategy_detail
@@ -120,7 +124,7 @@ BEGIN;
 INSERT INTO `strategy_detail` VALUES (1, 10001, '1', 'IMac', 10, 0, 0.05, '2025-08-15 15:38:05', '2025-08-15 15:38:05');
 INSERT INTO `strategy_detail` VALUES (2, 10001, '2', 'iphone', 20, 20, 0.15, '2025-08-15 15:38:05', '2025-08-15 15:38:05');
 INSERT INTO `strategy_detail` VALUES (3, 10001, '3', 'ipad', 50, 50, 0.20, '2025-08-15 15:38:05', '2025-08-15 15:38:05');
-INSERT INTO `strategy_detail` VALUES (4, 10001, '4', 'AirPods', 100, 81, 0.25, '2025-08-15 15:38:05', '2025-08-15 15:38:05');
+INSERT INTO `strategy_detail` VALUES (4, 10001, '4', 'AirPods', 100, 80, 0.25, '2025-08-15 15:38:05', '2025-08-15 15:38:05');
 INSERT INTO `strategy_detail` VALUES (5, 10001, '5', 'Book', 500, 391, 0.35, '2025-08-15 15:38:05', '2025-08-15 15:38:05');
 COMMIT;
 

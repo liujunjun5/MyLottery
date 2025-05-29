@@ -10,6 +10,8 @@ import com.helloLottery.domain.activity.model.vo.StrategyVO;
 import com.helloLottery.domain.activity.repository.IActivityRepository;
 import com.helloLottery.domain.activity.service.deploy.IActivityDeploy;
 import com.helloLottery.domain.activity.service.stateflow.IStateHandle;
+import com.helloLottery.infrastructure.dao.IActivityDao;
+import com.helloLottery.infrastructure.po.Activity;
 import com.hellolottery.common.Constants;
 import org.junit.Before;
 import org.junit.Test;
@@ -170,4 +172,12 @@ public class ActivityTest {
         logger.info("二次提审，测试：{}", JSON.toJSONString(stateHandler.checkPass(100001L, Constants.ActivityState.EDIT)));
     }
 
+    @Resource
+    private IActivityDao activityDao;
+
+    @Test
+    public void test_queryActivityById() {
+        Activity activity = activityDao.queryActivityById(100001L);
+        logger.info("测试结果：{}", JSON.toJSONString(activity));
+    }
 }
