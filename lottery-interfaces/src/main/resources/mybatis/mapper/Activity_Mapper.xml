@@ -10,6 +10,8 @@
         <result column="begin_date_time" property="beginDateTime"/>
         <result column="end_date_time" property="endDateTime"/>
         <result column="stock_count" property="stockCount"/>
+        <result column="strategy_id" property="strategyId"/>
+        <result column="stock_surplus_count" property="stockSurplusCount"/>
         <result column="take_count" property="takeCount"/>
         <result column="state" property="state"/>
         <result column="creator" property="creator"/>
@@ -30,6 +32,11 @@
         UPDATE activity
         SET state = #{afterState}
         WHERE activity_id = #{activityId} AND state = #{beforeState}
+    </update>
+
+    <update id="subtractionActivityStock" parameterType="java.lang.Long">
+        UPDATE activity SET stock_surplus_count = stock_surplus_count - 1
+        WHERE activity_id = #{activityId} AND stock_surplus_count > 0
     </update>
 
     <select id="queryActivityById" parameterType="java.lang.Long" resultMap="activityMap">

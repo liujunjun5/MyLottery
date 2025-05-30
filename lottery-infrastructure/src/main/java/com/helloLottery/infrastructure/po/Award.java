@@ -2,6 +2,11 @@ package com.helloLottery.infrastructure.po;
 
 import java.util.Date;
 
+/**
+ * @description: 奖品表
+ * @author liujun
+ * @date 2025/5/30 17:02
+ */
 public class Award {
     private Long id;
     private String awardId;

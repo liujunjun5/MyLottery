@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author liujun
- * @description:
+ * @description: 用户参与活动表
  * @date 2025/5/29 20:09
  */
 //@DBRouterStrategy(splitTable = true)
@@ -20,7 +20,7 @@ public interface IUserTakeActivityDao {
      * @date 20:19 2025/5/29
      * @param userTakeActivity
      **/
-    @DBRouter(key = "uId")
+//    @DBRouter(key = "uId")
     void insert(UserTakeActivity userTakeActivity);
 
 }

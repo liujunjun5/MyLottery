@@ -2,6 +2,11 @@ package com.helloLottery.infrastructure.po;
 
 import java.util.Date;
 
+/**
+ * @description: 策略表
+ * @author liujun
+ * @date 2025/5/30 17:02
+ */
 public class Strategy {
     private Long id;
     private Long strategyId;

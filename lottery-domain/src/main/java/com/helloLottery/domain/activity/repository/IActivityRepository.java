@@ -1,9 +1,7 @@
 package com.helloLottery.domain.activity.repository;
 
-import com.helloLottery.domain.activity.model.vo.ActivityVO;
-import com.helloLottery.domain.activity.model.vo.AwardVO;
-import com.helloLottery.domain.activity.model.vo.StrategyDetailVO;
-import com.helloLottery.domain.activity.model.vo.StrategyVO;
+import com.helloLottery.domain.activity.model.req.PartakeReq;
+import com.helloLottery.domain.activity.model.vo.*;
 import com.hellolottery.common.Constants;
 
 import java.util.List;
@@ -58,4 +56,19 @@ public interface IActivityRepository {
      * @date 2025/5/25 10:38
      */
     boolean alterStatus(Long activityId, Enum<Constants.ActivityState> beforeState, Enum<Constants.ActivityState> afterState);
+
+    /***
+     * @description 查询活动账单
+     * @author liujun
+     * @date 17:35 2025/5/30
+     * @return com.helloLottery.domain.activity.model.vo.ActivityBillVO
+     **/
+    ActivityBillVO queryActivityBill(PartakeReq req);
+
+    /**
+     * @description 扣减活动库存
+     * @param activityId   活动ID
+     * @return      扣减结果
+     */
+    int subtractionActivityStock(Long activityId);
 }
