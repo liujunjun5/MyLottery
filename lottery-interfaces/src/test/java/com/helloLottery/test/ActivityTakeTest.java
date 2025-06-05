@@ -1,5 +1,9 @@
 package com.helloLottery.test;
 
+import com.alibaba.fastjson.JSON;
+import com.helloLottery.domain.activity.model.req.PartakeReq;
+import com.helloLottery.domain.activity.model.res.PartakeResult;
+import com.helloLottery.domain.activity.service.partake.IActivityPartake;
 import com.helloLottery.infrastructure.dao.IUserTakeActivityDao;
 import com.helloLottery.infrastructure.po.UserTakeActivity;
 import org.junit.Test;
@@ -40,4 +44,14 @@ public class ActivityTakeTest {
         userTakeActivityDao.insert(userTakeActivity);
     }
 
+    @Resource
+    private IActivityPartake activityPartake;
+
+    @Test
+    public void test_activityPark() {
+        PartakeReq req = new PartakeReq("Ukdli109op811d", 100001L);
+        PartakeResult result = activityPartake.doPartake(req);
+        logger.info("请求参数：{}", JSON.toJSONString(req));
+        logger.info("测试结果：{}", JSON.toJSONString(result));
+    }
 }

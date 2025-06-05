@@ -5,6 +5,7 @@ import com.helloLottery.infrastructure.dao.IUserTakeActivityCountDao;
 import com.helloLottery.infrastructure.dao.IUserTakeActivityDao;
 import com.helloLottery.infrastructure.po.UserTakeActivity;
 import com.helloLottery.infrastructure.po.UserTakeActivityCount;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -14,6 +15,7 @@ import java.util.Date;
  * @description:
  * @date 2025/5/30 17:50
  */
+@Component
 public class UserTakeActivityRepository implements IUserTakeActivityRepository {
 
     @Resource
