@@ -1,0 +1,110 @@
+package com.helloLottery.domain.activity.service.partake.impl;
+
+import com.helloLottery.domain.activity.model.req.PartakeReq;
+import com.helloLottery.domain.activity.model.vo.ActivityBillVO;
+import com.helloLottery.domain.activity.repository.IUserTakeActivityRepository;
+import com.helloLottery.domain.activity.service.partake.BaseActivityPartake;
+import com.helloLottery.domain.support.ids.IIdGenerator;
+import com.hellolottery.common.Constants;
+import com.hellolottery.common.Result;
+import com.mars.middleware.db.router.strategy.IDBRouterStrategy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.support.TransactionTemplate;
+
+import javax.annotation.Resource;
+import java.util.Map;
+
+/**
+ * @author liujun
+ * @description: 用户参与活动实现类（校验基础信息、扣除活动库存、扣减用户参与次数）
+ * @date 2025/6/5 11:01
+ */
+@Service
+public class ActivityPartakeImpl extends BaseActivityPartake {
+
+    private Logger logger = LoggerFactory.getLogger(ActivityPartakeImpl.class);
+
+    @Resource
+    private TransactionTemplate transactionTemplate;
+
+    @Resource
+    private Map<Constants.Ids, IIdGenerator> idGeneratorMap;
+
+    @Resource
+    private IUserTakeActivityRepository userTakeActivityRepository;
+
+    @Resource
+    private IDBRouterStrategy dbRouter;
+
+    @Override
+    protected Result checkActivityBill(PartakeReq req, ActivityBillVO activityBillVO) {
+
+        // 活动状态
+        if (!activityBillVO.getState().equals(Constants.ActivityState.DOING.getCode())) {
+            logger.warn("活动当前状态非可用 state：{}", activityBillVO.getState());
+            return Result.buildResult(Constants.ResponseCode.UN_ERROR, "活动当前状态非可用");
+        }
+
+        // 活动日期
+        if (activityBillVO.getBeginDateTime().after(req.getPartakeDate()) || req.getPartakeDate().after(activityBillVO.getEndDateTime())) {
+            logger.warn("活动时间范围非可用 beginDateTime：{} endDateTime：{}", activityBillVO.getBeginDateTime(), activityBillVO.getEndDateTime());
+            return Result.buildResult(Constants.ResponseCode.UN_ERROR, "活动时间范围非可用");
+        }
+
+        // 活动库存
+        if (activityBillVO.getStockSurplusCount() <= 0) {
+            logger.warn("活动剩余库存非可用 stockSurplusCount：{}", activityBillVO.getStockSurplusCount());
+            return Result.buildResult(Constants.ResponseCode.UN_ERROR, "活动剩余库存非可用");
+        }
+
+        // 个人库存
+        if (activityBillVO.getUserTakeLeftCount() <= 0) {
+            logger.warn("个人领取次数非可用 userTakeLeftCount：{}", activityBillVO.getUserTakeLeftCount());
+            return Result.buildResult(Constants.ResponseCode.UN_ERROR, "个人领取次数非可用");
+        }
+
+        return Result.buildSuccessResult();
+    }
+
+    @Override
+    protected Result subActivityStock(PartakeReq req) {
+        int count = activityRepository.subtractionActivityStock(req.getActivityId());
+        if (count == 0) {
+            logger.error("活动库存扣减失败 activityId:{}", req.getActivityId());
+            return Result.buildResult(Constants.ResponseCode.NO_UPDATE);
+        }
+        return Result.buildSuccessResult();
+    }
+
+    @Override
+    protected Result takeActivity(PartakeReq req, ActivityBillVO bill) {
+
+        // 计算并且设置路由索引到ThreadLocal
+        dbRouter.doRouter(req.getuId());
+        return transactionTemplate.execute(status -> {
+            try {
+                // 扣减个人参与次数
+                int updateCount = userTakeActivityRepository.subtractionLeftCount(bill.getActivityId(), bill.getActivityName(), bill.getTakeCount(), bill.getUserTakeLeftCount(), req.getuId(), req.getPartakeDate());
+                if (0 == updateCount) {
+                    status.setRollbackOnly();
+                    logger.error("领取活动，扣减个人已参与次数失败 activityId：{} uId：{}", req.getActivityId(), req.getuId());
+                    return Result.buildResult(Constants.ResponseCode.NO_UPDATE);
+                }
+
+                // 插入活动参与次数
+                long takeId = idGeneratorMap.get(Constants.Ids.SnowFlake).nextId();
+                userTakeActivityRepository.takeActivity(bill.getActivityId(), bill.getActivityName(), bill.getTakeCount(), bill.getUserTakeLeftCount(), req.getuId(), req.getPartakeDate(), takeId);
+
+            } catch (DuplicateKeyException e) {
+                status.setRollbackOnly();
+                logger.error("领取活动，唯一索引冲突 activityId：{} uId：{}", req.getActivityId(), req.getuId(), e);
+                return Result.buildResult(Constants.ResponseCode.INDEX_DUP);
+            }
+            return Result.buildSuccessResult();
+        });
+    }
+
+}
