@@ -1,5 +1,6 @@
 package com.helloLottery.test;
 
+import com.hellolottery.common.Constants;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +32,7 @@ public class DrawAlgorithmTest {
         strategyList.add(new AwardRateInfo("五等奖：充电宝", new BigDecimal("0.35")));
 
         // 初始数据
-        randomDrawAlgorithm.initRateTuple(100001L, strategyList);
+        randomDrawAlgorithm.initRateTuple(100001L, Constants.StrategyMode.SINGLE.getCode(), strategyList);
     }
 
     @Test
