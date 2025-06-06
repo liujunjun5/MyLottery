@@ -88,30 +88,33 @@ public class ActivityPartakeImpl extends BaseActivityPartake {
 
     @Override
     protected Result takeActivity(PartakeReq req, ActivityBillVO bill, Long takeId) {
+        try {
+            // 计算并且设置路由索引到ThreadLocal
+            dbRouter.doRouter(req.getuId());
+            return transactionTemplate.execute(status -> {
+                try {
+                    // 扣减个人参与次数
+                    int updateCount = userTakeActivityRepository.subtractionLeftCount(bill.getActivityId(), bill.getActivityName(), bill.getTakeCount(), bill.getUserTakeLeftCount(), req.getuId(), req.getPartakeDate());
+                    if (0 == updateCount) {
+                        status.setRollbackOnly();
+                        logger.error("领取活动，扣减个人已参与次数失败 activityId：{} uId：{}", req.getActivityId(), req.getuId());
+                        return Result.buildResult(Constants.ResponseCode.NO_UPDATE);
+                    }
 
-        // 计算并且设置路由索引到ThreadLocal
-        dbRouter.doRouter(req.getuId());
-        return transactionTemplate.execute(status -> {
-            try {
-                // 扣减个人参与次数
-                int updateCount = userTakeActivityRepository.subtractionLeftCount(bill.getActivityId(), bill.getActivityName(), bill.getTakeCount(), bill.getUserTakeLeftCount(), req.getuId(), req.getPartakeDate());
-                if (0 == updateCount) {
-                    status.setRollbackOnly();
-                    logger.error("领取活动，扣减个人已参与次数失败 activityId：{} uId：{}", req.getActivityId(), req.getuId());
-                    return Result.buildResult(Constants.ResponseCode.NO_UPDATE);
-                }
-
-                // 插入活动参与次数
+                    // 插入活动参与次数
 //                long takeId = idGeneratorMap.get(Constants.Ids.SnowFlake).nextId();
-                userTakeActivityRepository.takeActivity(bill.getActivityId(), bill.getActivityName(), bill.getTakeCount(), bill.getUserTakeLeftCount(), req.getuId(), req.getPartakeDate(), takeId);
+                    userTakeActivityRepository.takeActivity(bill.getActivityId(), bill.getActivityName(), bill.getTakeCount(), bill.getUserTakeLeftCount(), req.getuId(), req.getPartakeDate(), takeId);
 
-            } catch (DuplicateKeyException e) {
-                status.setRollbackOnly();
-                logger.error("领取活动，唯一索引冲突 activityId：{} uId：{}", req.getActivityId(), req.getuId(), e);
-                return Result.buildResult(Constants.ResponseCode.INDEX_DUP);
-            }
-            return Result.buildSuccessResult();
-        });
+                } catch (DuplicateKeyException e) {
+                    status.setRollbackOnly();
+                    logger.error("领取活动，唯一索引冲突 activityId：{} uId：{}", req.getActivityId(), req.getuId(), e);
+                    return Result.buildResult(Constants.ResponseCode.INDEX_DUP);
+                }
+                return Result.buildSuccessResult();
+            });
+        } finally {
+            dbRouter.clear();
+        }
     }
 
     @Override

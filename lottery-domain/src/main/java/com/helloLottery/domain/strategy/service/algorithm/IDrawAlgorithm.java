@@ -15,7 +15,7 @@ public interface IDrawAlgorithm {
      * @param strategyId
      * @param awardRateInfoList
      */
-    void initRateTuple(Long strategyId, List<AwardRateInfo> awardRateInfoList);
+    void initRateTuple(Long strategyId,Integer strategyMode, List<AwardRateInfo> awardRateInfoList);
 
     /**
      * 判断概率元组是否存在
@@ -33,4 +33,11 @@ public interface IDrawAlgorithm {
      * @return 中奖结果
      */
     String randomDraw(Long strategyId, List<String> excludeAwardIds);
+
+    /**
+     * 判断是否已经，做了数据初始化
+     * @param strategyId    策略ID
+     * @return              判断结果
+     */
+    boolean isExist(Long strategyId);
 }

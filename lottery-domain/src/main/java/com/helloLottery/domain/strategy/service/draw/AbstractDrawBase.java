@@ -11,6 +11,7 @@ import com.hellolottery.common.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,23 +66,22 @@ public abstract class AbstractDrawBase extends DrawStrategySupport implements ID
      */
     private void checkAndInitRateData(Long strategyId, List<StrategyDetailBriefVO> strategyDetailList, Integer strategyMode) {
 
-        if (!strategyMode.equals(Constants.StrategyMode.SINGLE.getCode())) {
-            return;
-        }
-        // 已经初始化完了
+        // 根据抽奖策略模式，获取对应的抽奖服务
         IDrawAlgorithm drawAlgorithm = drawAlgorithmGroup.get(strategyMode);
 
-        boolean existRateTuple = drawAlgorithm.isExistRateTuple(strategyId);
-        if (existRateTuple) {
+        // 判断已处理过的的数据
+        if (drawAlgorithm.isExist(strategyId)) {
             return;
         }
 
-        // 将 StrategyDetail 转换为 awardRateInfoList
-        List<AwardRateInfo> awardRateInfoList = new ArrayList<>();
+        // 解析并初始化中奖概率数据到散列表
+        List<AwardRateInfo> awardRateInfoList = new ArrayList<>(strategyDetailList.size());
         for (StrategyDetailBriefVO strategyDetail : strategyDetailList) {
             awardRateInfoList.add(new AwardRateInfo(strategyDetail.getAwardId(), strategyDetail.getAwardRate()));
         }
-        drawAlgorithm.initRateTuple(strategyId, awardRateInfoList);
+
+        drawAlgorithm.initRateTuple(strategyId, strategyMode, awardRateInfoList);
+
     }
 
     /**

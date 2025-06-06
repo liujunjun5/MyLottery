@@ -1,6 +1,7 @@
 package com.helloLottery.domain.strategy.service.algorithm;
 
 import com.helloLottery.domain.strategy.model.vo.AwardRateInfo;
+import com.hellolottery.common.Constants;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -25,21 +26,34 @@ public abstract class BaseAlgorithm implements IDrawAlgorithm {
     protected Map<Long, List<AwardRateInfo>> awardRateInfoMap = new ConcurrentHashMap<>();
 
     @Override
-    public void initRateTuple(Long strategyId, List<AwardRateInfo> awardRateInfoList) {
-        // 存放策略和奖品映射 例如 strategyId 1 --> List<AwardRateInfo> {"一等奖：IMac", new BigDecimal("0.05"),"二等奖：iphone", new BigDecimal("0.15"),"三等奖：ipad", new BigDecimal("0.20")}
+    public synchronized void initRateTuple(Long strategyId, Integer strategyMode, List<AwardRateInfo> awardRateInfoList) {
+
+        // 前置判断
+        if (isExist(strategyId)){
+            return;
+        }
+
+        // 保存奖品概率信息
         awardRateInfoMap.put(strategyId, awardRateInfoList);
 
-        // 初始化元组
-        String[] rateTuple = rateTupleMap.computeIfAbsent(strategyId, k->new String[RATE_TUPLE_LENGTH]);
+        // 非单项概率，不必存入缓存，因为这部分抽奖算法需要实时处理中奖概率。
+        if (!Constants.StrategyMode.SINGLE.getCode().equals(strategyMode)) {
+            return;
+        }
 
-        // 互质的数只有1
-        int cursor = 0;
+        String[] rateTuple = rateTupleMap.computeIfAbsent(strategyId, k -> new String[RATE_TUPLE_LENGTH]);
+
+        int cursorVal = 0;
         for (AwardRateInfo awardRateInfo : awardRateInfoList) {
-            int rate = awardRateInfo.getAwardRate().multiply(new BigDecimal(100)).intValue();
-            for (int i = cursor + 1; i <= (rate + cursor); i++) {
+            int rateVal = awardRateInfo.getAwardRate().multiply(new BigDecimal(100)).intValue();
+
+            // 循环填充概率范围值
+            for (int i = cursorVal + 1; i <= (rateVal + cursorVal); i++) {
                 rateTuple[hashIdx(i)] = awardRateInfo.getAwardId();
             }
-            cursor += rate;
+
+            cursorVal += rateVal;
+
         }
     }
 
@@ -54,5 +68,10 @@ public abstract class BaseAlgorithm implements IDrawAlgorithm {
     protected int hashIdx(int val) {
         int hash = val * HASH_INCREMENT + HASH_INCREMENT;
         return hash & (RATE_TUPLE_LENGTH - 1);
+    }
+
+    @Override
+    public boolean isExist(Long strategyId) {
+        return awardRateInfoMap.containsKey(strategyId);
     }
 }

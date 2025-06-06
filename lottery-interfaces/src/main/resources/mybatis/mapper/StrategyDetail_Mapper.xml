@@ -33,7 +33,8 @@
     </insert>
 
     <select id="queryStrategyDetailList" parameterType="java.lang.Long" resultMap="strategyDetailMap">
-        SELECT id, strategy_id, award_id, award_count, award_rate, create_time, update_time
+        SELECT id, strategy_id, award_id, award_count, award_surplus_count,
+               award_rate, create_time, update_time
         FROM strategy_detail
         WHERE strategy_id = #{strategyId}
     </select>
