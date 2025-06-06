@@ -1,6 +1,7 @@
 package com.helloLottery.domain.strategy.service.draw;
 
 import com.helloLottery.domain.strategy.model.aggregates.StrategyRich;
+import com.helloLottery.domain.strategy.model.vo.AwardBriefVO;
 import com.helloLottery.domain.strategy.model.vo.DrawAwardInfo;
 import com.helloLottery.domain.strategy.repository.IStrategyRepository;
 
@@ -31,7 +32,7 @@ public class DrawStrategySupport extends DrawConfig{
      * @param awardId 奖品ID
      * @return 中奖详情
      */
-    protected DrawAwardInfo queryAwardInfoByAwardId(String awardId){
+    protected AwardBriefVO queryAwardInfoByAwardId(String awardId){
         return strategyRepository.queryAwardInfo(awardId);
     }
 

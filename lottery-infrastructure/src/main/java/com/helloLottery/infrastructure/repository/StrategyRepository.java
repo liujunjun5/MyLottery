@@ -2,7 +2,9 @@ package com.helloLottery.infrastructure.repository;
 
 import com.helloLottery.domain.activity.model.vo.StrategyVO;
 import com.helloLottery.domain.strategy.model.aggregates.StrategyRich;
+import com.helloLottery.domain.strategy.model.vo.AwardBriefVO;
 import com.helloLottery.domain.strategy.model.vo.DrawAwardInfo;
+import com.helloLottery.domain.strategy.model.vo.StrategyBriefVO;
 import com.helloLottery.domain.strategy.model.vo.StrategyDetailBriefVO;
 import com.helloLottery.domain.strategy.repository.IStrategyRepository;
 import com.helloLottery.infrastructure.dao.IAwardDao;
@@ -38,8 +40,8 @@ public class StrategyRepository implements IStrategyRepository {
         Strategy strategy = strategyDao.queryStrategy(strategyId);
         List<StrategyDetail> strategyDetails = strategyDetailDao.queryStrategyDetailList(strategyId);
 
-        StrategyVO strategyVO = new StrategyVO();
-        BeanUtils.copyProperties(strategy, strategyVO);
+        StrategyBriefVO strategyBriefVO = new StrategyBriefVO();
+        BeanUtils.copyProperties(strategy, strategyBriefVO);
 
         List<StrategyDetailBriefVO> strategyDetailBriefVOList = new ArrayList<>();
         for (StrategyDetail strategyDetail: strategyDetails) {
@@ -48,15 +50,22 @@ public class StrategyRepository implements IStrategyRepository {
             strategyDetailBriefVOList.add(strategyDetailVO);
         }
 
-        return new StrategyRich(strategyId, strategyVO, strategyDetailBriefVOList);
+        return new StrategyRich(strategyId, strategyBriefVO, strategyDetailBriefVOList);
     }
 
     @Override
-    public DrawAwardInfo queryAwardInfo(String awardId) {
+    public AwardBriefVO queryAwardInfo(String awardId) {
+
         Award award = awardDao.queryAwardInfo(awardId);
-        DrawAwardInfo drawAwardInfo = new DrawAwardInfo();
-        BeanUtils.copyProperties(award, drawAwardInfo);
-        return drawAwardInfo;
+
+        // 可以使用 BeanUtils.copyProperties(award, awardBriefVO)、或者基于ASM实现的Bean-Mapping，但在效率上最好的依旧是硬编码
+        AwardBriefVO awardBriefVO = new AwardBriefVO();
+        awardBriefVO.setAwardId(award.getAwardId());
+        awardBriefVO.setAwardType(award.getAwardType());
+        awardBriefVO.setAwardName(award.getAwardName());
+        awardBriefVO.setAwardContent(award.getAwardContent());
+
+        return awardBriefVO;
     }
 
     @Override

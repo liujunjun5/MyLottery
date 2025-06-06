@@ -1,6 +1,7 @@
 package com.helloLottery.domain.strategy.repository;
 
 import com.helloLottery.domain.strategy.model.aggregates.StrategyRich;
+import com.helloLottery.domain.strategy.model.vo.AwardBriefVO;
 import com.helloLottery.domain.strategy.model.vo.DrawAwardInfo;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface IStrategyRepository {
 
     StrategyRich queryStrategyRich(Long strategyId);
 
-    DrawAwardInfo queryAwardInfo(String awardId);
+    AwardBriefVO queryAwardInfo(String awardId);
 
     /**
      * 查询策略中没有库存的奖品列表

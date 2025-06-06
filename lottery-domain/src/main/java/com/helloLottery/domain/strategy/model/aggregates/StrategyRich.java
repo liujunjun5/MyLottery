@@ -1,6 +1,7 @@
 package com.helloLottery.domain.strategy.model.aggregates;
 
 import com.helloLottery.domain.activity.model.vo.StrategyVO;
+import com.helloLottery.domain.strategy.model.vo.StrategyBriefVO;
 import com.helloLottery.domain.strategy.model.vo.StrategyDetailBriefVO;
 
 
@@ -8,13 +9,13 @@ import java.util.List;
 
 public class StrategyRich {
     private Long strategyId;
-    private StrategyVO strategy;
+    private StrategyBriefVO strategy;
     private List<StrategyDetailBriefVO> strategyDetailList;
 
     public StrategyRich() {
     }
 
-    public StrategyRich(Long strategyId, StrategyVO strategy, List<StrategyDetailBriefVO> strategyDetailList) {
+    public StrategyRich(Long strategyId, StrategyBriefVO strategy, List<StrategyDetailBriefVO> strategyDetailList) {
         this.strategyId = strategyId;
         this.strategy = strategy;
         this.strategyDetailList = strategyDetailList;
@@ -28,11 +29,11 @@ public class StrategyRich {
         this.strategyId = strategyId;
     }
 
-    public StrategyVO getStrategy() {
+    public StrategyBriefVO getStrategy() {
         return strategy;
     }
 
-    public void setStrategy(StrategyVO strategy) {
+    public void setStrategy(StrategyBriefVO strategy) {
         this.strategy = strategy;
     }
 

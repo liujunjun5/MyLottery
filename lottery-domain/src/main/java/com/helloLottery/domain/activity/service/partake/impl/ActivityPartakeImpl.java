@@ -2,6 +2,8 @@ package com.helloLottery.domain.activity.service.partake.impl;
 
 import com.helloLottery.domain.activity.model.req.PartakeReq;
 import com.helloLottery.domain.activity.model.vo.ActivityBillVO;
+import com.helloLottery.domain.activity.model.vo.DrawOrderVO;
+import com.helloLottery.domain.activity.model.vo.UserTakeActivityVO;
 import com.helloLottery.domain.activity.repository.IUserTakeActivityRepository;
 import com.helloLottery.domain.activity.service.partake.BaseActivityPartake;
 import com.helloLottery.domain.support.ids.IIdGenerator;
@@ -38,6 +40,11 @@ public class ActivityPartakeImpl extends BaseActivityPartake {
 
     @Resource
     private IDBRouterStrategy dbRouter;
+
+    @Override
+    protected UserTakeActivityVO queryNoConsumedTakeActivityOrder(Long activityId, String uId) {
+        return userTakeActivityRepository.queryNoConsumedTakeActivityOrder(activityId, uId);
+    }
 
     @Override
     protected Result checkActivityBill(PartakeReq req, ActivityBillVO activityBillVO) {
@@ -80,7 +87,7 @@ public class ActivityPartakeImpl extends BaseActivityPartake {
     }
 
     @Override
-    protected Result takeActivity(PartakeReq req, ActivityBillVO bill) {
+    protected Result takeActivity(PartakeReq req, ActivityBillVO bill, Long takeId) {
 
         // 计算并且设置路由索引到ThreadLocal
         dbRouter.doRouter(req.getuId());
@@ -95,7 +102,7 @@ public class ActivityPartakeImpl extends BaseActivityPartake {
                 }
 
                 // 插入活动参与次数
-                long takeId = idGeneratorMap.get(Constants.Ids.SnowFlake).nextId();
+//                long takeId = idGeneratorMap.get(Constants.Ids.SnowFlake).nextId();
                 userTakeActivityRepository.takeActivity(bill.getActivityId(), bill.getActivityName(), bill.getTakeCount(), bill.getUserTakeLeftCount(), req.getuId(), req.getPartakeDate(), takeId);
 
             } catch (DuplicateKeyException e) {
@@ -107,4 +114,31 @@ public class ActivityPartakeImpl extends BaseActivityPartake {
         });
     }
 
+    @Override
+    public Result recordDrawOrder(DrawOrderVO drawOrder) {
+        try {
+            dbRouter.doRouter(drawOrder.getuId());
+            return transactionTemplate.execute(status -> {
+                try {
+                    // 锁定活动领取记录
+                    int lockCount = userTakeActivityRepository.lockTackActivity(drawOrder.getuId(), drawOrder.getActivityId(), drawOrder.getTakeId());
+                    if (0 == lockCount) {
+                        status.setRollbackOnly();
+                        logger.error("记录中奖单，个人参与活动抽奖已消耗完 activityId：{} uId：{}", drawOrder.getActivityId(), drawOrder.getuId());
+                        return Result.buildResult(Constants.ResponseCode.NO_UPDATE);
+                    }
+
+                    // 保存抽奖信息
+                    userTakeActivityRepository.saveUserStrategyExport(drawOrder);
+                } catch (DuplicateKeyException e) {
+                    status.setRollbackOnly();
+                    logger.error("记录中奖单，唯一索引冲突 activityId：{} uId：{}", drawOrder.getActivityId(), drawOrder.getuId(), e);
+                    return Result.buildResult(Constants.ResponseCode.INDEX_DUP);
+                }
+                return Result.buildSuccessResult();
+            });
+        } finally {
+            dbRouter.clear();
+        }
+    }
 }

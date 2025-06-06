@@ -1,5 +1,8 @@
 package com.helloLottery.domain.activity.repository;
 
+import com.helloLottery.domain.activity.model.vo.DrawOrderVO;
+import com.helloLottery.domain.activity.model.vo.UserTakeActivityVO;
+
 import java.util.Date;
 
 /**
@@ -35,4 +38,16 @@ public interface IUserTakeActivityRepository {
      */
     void takeActivity(Long activityId, String activityName, Integer takeCount, Integer userTakeLeftCount, String uId, Date takeDate, Long takeId);
 
+    /**
+     * 查询是否存在未执行抽奖领取活动单【user_take_activity 存在 state = 0，领取了但抽奖过程失败的，可以直接返回领取结果继续抽奖】
+     *
+     * @param activityId    活动ID
+     * @param uId           用户ID
+     * @return              领取单
+     */
+    UserTakeActivityVO queryNoConsumedTakeActivityOrder(Long activityId, String uId);
+
+    int lockTackActivity(String uId, Long activityId, Long takeId);
+
+    void saveUserStrategyExport(DrawOrderVO drawOrder);
 }

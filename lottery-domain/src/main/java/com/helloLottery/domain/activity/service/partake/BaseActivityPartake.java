@@ -3,8 +3,13 @@ package com.helloLottery.domain.activity.service.partake;
 import com.helloLottery.domain.activity.model.req.PartakeReq;
 import com.helloLottery.domain.activity.model.res.PartakeResult;
 import com.helloLottery.domain.activity.model.vo.ActivityBillVO;
+import com.helloLottery.domain.activity.model.vo.UserTakeActivityVO;
+import com.helloLottery.domain.support.ids.IIdGenerator;
 import com.hellolottery.common.Constants;
 import com.hellolottery.common.Result;
+
+import javax.annotation.Resource;
+import java.util.Map;
 
 /**
  * @author liujun
@@ -13,8 +18,17 @@ import com.hellolottery.common.Result;
  */
 public abstract class BaseActivityPartake extends ActivityPartakeSupport implements IActivityPartake {
 
+    @Resource
+    private Map<Constants.Ids, IIdGenerator> idGeneratorMap;
+
     @Override
     public PartakeResult doPartake(PartakeReq req) {
+
+        UserTakeActivityVO userTakeActivityVO = this.queryNoConsumedTakeActivityOrder(req.getActivityId(), req.getuId());
+        if (null != userTakeActivityVO) {
+            return buildPartakeResult(userTakeActivityVO.getStrategyId(), userTakeActivityVO.getTakeId());
+        }
+
         // 获取活动相关信息
         ActivityBillVO activityBillVO = super.queryActivityBill(req);
 
@@ -31,25 +45,38 @@ public abstract class BaseActivityPartake extends ActivityPartakeSupport impleme
         }
 
         // 用户参与活动
-        Result takeActivityResult = this.takeActivity(req, activityBillVO);
+        Long takeId = idGeneratorMap.get(Constants.Ids.SnowFlake).nextId();
+        Result takeActivityResult = this.takeActivity(req, activityBillVO, takeId);
         if (!Constants.ResponseCode.SUCCESS.getCode().equals(takeActivityResult.getCode())) {
             return new PartakeResult(takeActivityResult.getCode(), takeActivityResult.getInfo());
         }
 
         // 封装并且返回结果
+        return buildPartakeResult(activityBillVO.getStrategyId(), takeId);
+    }
+
+    private PartakeResult buildPartakeResult(Long strategyId, Long takeId) {
         PartakeResult partakeResult = new PartakeResult(Constants.ResponseCode.SUCCESS.getCode(), Constants.ResponseCode.SUCCESS.getInfo());
-        partakeResult.setStrategyId(activityBillVO.getStrategyId());
+        partakeResult.setStrategyId(strategyId);
+        partakeResult.setTakeId(takeId);
         return partakeResult;
     }
 
-    /***
-     * @description 基础信息校验
+    /**
+     * @description: 查询是否存在未执行抽奖领取活动单【user_take_activity 存在 state = 0，领取了但抽奖过程失败的，可以直接返回领取结果继续抽奖】
      * @author liujun
-     * @date 10:54 2025/6/5
-     * @param req 参与Id
-     * @param activityBillVO 活动相关信息
-     * @return com.hellolottery.common.Result
-     **/
+     * @date 2025/6/6 11:05
+     */
+    protected abstract UserTakeActivityVO queryNoConsumedTakeActivityOrder(Long activityId, String getuId);
+    
+        /***
+         * @description 基础信息校验
+         * @author liujun
+         * @date 10:54 2025/6/5
+         * @param req 参与Id
+         * @param activityBillVO 活动相关信息
+         * @return com.hellolottery.common.Result
+         **/
     protected abstract Result checkActivityBill(PartakeReq req, ActivityBillVO activityBillVO);
 
     /**
@@ -64,5 +91,5 @@ public abstract class BaseActivityPartake extends ActivityPartakeSupport impleme
      * @author liujun
      * @date 2025/6/5 10:55
      */
-    protected abstract Result takeActivity(PartakeReq req, ActivityBillVO activityBillVO);
+    protected abstract Result takeActivity(PartakeReq req, ActivityBillVO activityBillVO, Long takeId);
 }

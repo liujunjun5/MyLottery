@@ -9,35 +9,59 @@ import java.util.Date;
  */
 public class UserTakeActivity {
 
-    /**自增id*/
+    /**
+     * 自增ID
+     */
     private Long id;
-
-    /**用户id*/
+    /**
+     * 用户ID
+     */
     private String uId;
-
-    /**参与id*/
+    /**
+     * 活动领取ID
+     */
     private Long takeId;
-
-    /**活动id*/
+    /**
+     * 活动ID
+     */
     private Long activityId;
-
-    /**活动名*/
+    /**
+     * 活动名称
+     */
     private String activityName;
-
-    /**参与时间*/
+    /**
+     * 活动领取时间
+     */
     private Date takeDate;
-
-    /**参与次数*/
+    /**
+     * 领取次数
+     */
     private Integer takeCount;
 
-    /**防重复*/
+    /**
+     * 策略ID
+     */
+    private Long strategyId;
+
+    /**
+     * 活动单使用状态 0未使用、1已使用
+     * Constants.TaskState
+     */
+    private Integer state;
+
+    /**
+     * 防重ID
+     */
     private String uuid;
-
-    /**创建时间*/
+    /**
+     * 创建时间
+     */
     private Date createTime;
-
-    /**更新时间*/
+    /**
+     * 更新时间
+     */
     private Date updateTime;
+
 
     public Long getId() {
         return id;
@@ -95,6 +119,30 @@ public class UserTakeActivity {
         this.takeCount = takeCount;
     }
 
+    public Long getStrategyId() {
+        return strategyId;
+    }
+
+    public void setStrategyId(Long strategyId) {
+        this.strategyId = strategyId;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
     public Date getCreateTime() {
         return createTime;
     }
@@ -109,13 +157,5 @@ public class UserTakeActivity {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
     }
 }
