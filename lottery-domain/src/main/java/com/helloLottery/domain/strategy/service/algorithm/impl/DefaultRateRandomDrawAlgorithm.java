@@ -1,6 +1,6 @@
 package com.helloLottery.domain.strategy.service.algorithm.impl;
 
-import com.helloLottery.domain.strategy.model.vo.AwardRateInfo;
+import com.helloLottery.domain.strategy.model.vo.AwardRateVO;
 import com.helloLottery.domain.strategy.service.algorithm.BaseAlgorithm;
 import org.springframework.stereotype.Component;
 
@@ -22,18 +22,18 @@ public class DefaultRateRandomDrawAlgorithm extends BaseAlgorithm {
         // 统计当前的总概率
         BigDecimal current = BigDecimal.ZERO;
         // 记录当前的剩余奖品概率
-        List<AwardRateInfo> currentAwateList = new ArrayList<>();
+        List<AwardRateVO> currentAwateList = new ArrayList<>();
         // 获取完整的概率
-        List<AwardRateInfo> awardRateInfoList = super.awardRateInfoMap.get(strategyId);
+        List<AwardRateVO> awardRateVOList = super.awardRateInfoMap.get(strategyId);
         // 减去需要过滤的奖品id 统计总概率和当前奖品id
-        for (AwardRateInfo awardRateInfo : awardRateInfoList) {
+        for (AwardRateVO awardRateVO : awardRateVOList) {
             // 在排除集合中
-            String awardId = awardRateInfo.getAwardId();
+            String awardId = awardRateVO.getAwardId();
             if (excludeAwardIds.contains(awardId)) {
                 continue;
             }
-            current = current.add(awardRateInfo.getAwardRate());
-            currentAwateList.add(awardRateInfo);
+            current = current.add(awardRateVO.getAwardRate());
+            currentAwateList.add(awardRateVO);
         }
         // 无奖品或者只有一种奖品
         if (currentAwateList.size() == 0) return "";
@@ -43,10 +43,10 @@ public class DefaultRateRandomDrawAlgorithm extends BaseAlgorithm {
         int randomVal = new SecureRandom().nextInt(100) + 1;
         // 2.计算所在区间
         int cursor = 0;
-        for (AwardRateInfo awardRateInfo : currentAwateList) {
-            int curRate = awardRateInfo.getAwardRate().divide(current, 2, BigDecimal.ROUND_UP).multiply(new BigDecimal(100)).intValue();
+        for (AwardRateVO awardRateVO : currentAwateList) {
+            int curRate = awardRateVO.getAwardRate().divide(current, 2, BigDecimal.ROUND_UP).multiply(new BigDecimal(100)).intValue();
             if (curRate + cursor >= randomVal) {
-                awardId = awardRateInfo.getAwardId();
+                awardId = awardRateVO.getAwardId();
                 break;
             }
             cursor += curRate;

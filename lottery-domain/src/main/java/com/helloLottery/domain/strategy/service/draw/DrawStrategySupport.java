@@ -2,7 +2,6 @@ package com.helloLottery.domain.strategy.service.draw;
 
 import com.helloLottery.domain.strategy.model.aggregates.StrategyRich;
 import com.helloLottery.domain.strategy.model.vo.AwardBriefVO;
-import com.helloLottery.domain.strategy.model.vo.DrawAwardInfo;
 import com.helloLottery.domain.strategy.repository.IStrategyRepository;
 
 import javax.annotation.Resource;
