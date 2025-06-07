@@ -132,6 +132,7 @@ public class ActivityBillVO {
                 ", endDateTime=" + endDateTime +
                 ", stockSurplusCount=" + stockSurplusCount +
                 ", state=" + state +
+                ", strategyId=" + strategyId +
                 ", takeCount=" + takeCount +
                 ", userTakeLeftCount=" + userTakeLeftCount +
                 '}';

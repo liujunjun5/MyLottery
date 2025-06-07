@@ -2,7 +2,7 @@ package com.helloLottery.domain.activity.model.vo;
 
 /**
  * @author liujun
- * @description:
+ * @description: 用户领取活动记录
  * @date 2025/6/6 11:04
  */
 public class UserTakeActivityVO {

@@ -31,6 +31,13 @@ public interface IUserTakeActivityDao {
      */
     int lockTackActivity(UserTakeActivity userTakeActivity);
 
+    /**
+     * 查询是否存在未执行抽奖领取活动单【user_take_activity 存在 state = 0，领取了但抽奖过程失败的，可以直接返回领取结果继续抽奖】
+     * 查询此活动ID，用户最早领取但未消费的一条记录
+     *
+     * @param userTakeActivity 请求入参
+     * @return                 领取结果
+     */
     @DBRouter
-    UserTakeActivity queryNoConsumedTakeActivityOrder(UserTakeActivity userTakeActivity);
+    UserTakeActivity    queryNoConsumedTakeActivityOrder(UserTakeActivity userTakeActivity);
 }
