@@ -1,6 +1,6 @@
 package com.helloLottery.application.process.res;
 
-import com.helloLottery.domain.strategy.model.vo.DrawAwardInfo;
+import com.helloLottery.domain.strategy.model.vo.DrawAwardVO;
 import com.hellolottery.common.Result;
 
 /**
@@ -9,22 +9,22 @@ import com.hellolottery.common.Result;
  * @date 2025/6/6 10:21
  */
 public class DrawProcessResult extends Result {
-    private DrawAwardInfo drawAwardInfo;
+    private DrawAwardVO drawAwardVO;
 
     public DrawProcessResult(String code, String info) {
         super(code, info);
     }
 
-    public DrawProcessResult(String code, String info, DrawAwardInfo drawAwardInfo) {
+    public DrawProcessResult(String code, String info, DrawAwardVO drawAwardVO) {
         super(code, info);
-        this.drawAwardInfo = drawAwardInfo;
+        this.drawAwardVO = drawAwardVO;
     }
 
-    public DrawAwardInfo getDrawAwardInfo() {
-        return drawAwardInfo;
+    public DrawAwardVO getDrawAwardInfo() {
+        return drawAwardVO;
     }
 
-    public void setDrawAwardInfo(DrawAwardInfo drawAwardInfo) {
-        this.drawAwardInfo = drawAwardInfo;
+    public void setDrawAwardInfo(DrawAwardVO drawAwardVO) {
+        this.drawAwardVO = drawAwardVO;
     }
 }

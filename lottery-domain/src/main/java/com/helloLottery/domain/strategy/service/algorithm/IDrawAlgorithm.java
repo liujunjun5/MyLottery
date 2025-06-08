@@ -1,6 +1,6 @@
 package com.helloLottery.domain.strategy.service.algorithm;
 
-import com.helloLottery.domain.strategy.model.vo.AwardRateInfo;
+import com.helloLottery.domain.strategy.model.vo.AwardRateVO;
 
 import java.util.List;
 
@@ -13,9 +13,9 @@ public interface IDrawAlgorithm {
      * 初始化概率元祖 使用过程中不允许修改
      *
      * @param strategyId
-     * @param awardRateInfoList
+     * @param awardRateVOList
      */
-    void initRateTuple(Long strategyId,Integer strategyMode, List<AwardRateInfo> awardRateInfoList);
+    void initRateTuple(Long strategyId,Integer strategyMode, List<AwardRateVO> awardRateVOList);
 
     /**
      * 判断概率元组是否存在

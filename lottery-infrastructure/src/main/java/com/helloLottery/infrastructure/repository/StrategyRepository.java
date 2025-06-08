@@ -1,9 +1,7 @@
 package com.helloLottery.infrastructure.repository;
 
-import com.helloLottery.domain.activity.model.vo.StrategyVO;
 import com.helloLottery.domain.strategy.model.aggregates.StrategyRich;
 import com.helloLottery.domain.strategy.model.vo.AwardBriefVO;
-import com.helloLottery.domain.strategy.model.vo.DrawAwardInfo;
 import com.helloLottery.domain.strategy.model.vo.StrategyBriefVO;
 import com.helloLottery.domain.strategy.model.vo.StrategyDetailBriefVO;
 import com.helloLottery.domain.strategy.repository.IStrategyRepository;
