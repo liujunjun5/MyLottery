@@ -38,5 +38,5 @@ public interface IUserTakeActivityDao {
      * @return                 领取结果
      */
     @DBRouter
-    UserTakeActivity    queryNoConsumedTakeActivityOrder(UserTakeActivity userTakeActivity);
+    UserTakeActivity queryNoConsumedTakeActivityOrder(UserTakeActivity userTakeActivity);
 }
