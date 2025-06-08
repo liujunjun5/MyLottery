@@ -97,7 +97,7 @@ public abstract class AbstractDrawBase extends DrawStrategySupport implements ID
         }
 
         AwardBriefVO award = super.queryAwardInfoByAwardId(awardId);
-        DrawAwardVO drawAwardVO = new DrawAwardVO(award.getAwardId(), award.getAwardType(), award.getAwardName(), award.getAwardContent());
+        DrawAwardVO drawAwardVO = new DrawAwardVO(uId, award.getAwardId(), award.getAwardType(), award.getAwardName(), award.getAwardContent());
         drawAwardVO.setStrategyMode(strategy.getStrategyMode());
         drawAwardVO.setGrantType(strategy.getGrantType());
         drawAwardVO.setGrantDate(strategy.getGrantDate());

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.helloLottery.infrastructure.dao.IRuleTreeNodeLineDao">
 
-    <resultMap id="ruleTreeNodeLineResultMap" type="com.helloLottery.infrastructure.po.RuleTreeNodeLine">
+    <resultMap id="ruleTreeNodeLineResultMap" type="com.helloLottery.interfaces.po.RuleTreeNodeLine">
         <id column="id" property="id"/>
         <result column="tree_id" property="treeId"/>
         <result column="node_id_from" property="nodeIdFrom"/>

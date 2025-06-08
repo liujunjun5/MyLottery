@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.helloLottery.infrastructure.dao.IStrategyDetailDao">
 
-    <resultMap id="strategyDetailMap" type="com.helloLottery.infrastructure.po.StrategyDetail">
+    <resultMap id="strategyDetailMap" type="com.helloLottery.interfaces.po.StrategyDetail">
         <id column="id" property="id"/>
         <result column="strategy_id" property="strategyId"/>
         <result column="award_id" property="awardId"/>
@@ -45,7 +45,7 @@
         WHERE strategy_id = #{strategyId} AND award_surplus_count = 0
     </select>
 
-    <update id="deductStock" parameterType="com.helloLottery.infrastructure.po.StrategyDetail">
+    <update id="deductStock" parameterType="com.helloLottery.interfaces.po.StrategyDetail">
         UPDATE strategy_detail
         SET award_surplus_count = award_surplus_count - 1
         WHERE strategy_id = #{strategyId}

@@ -3,10 +3,14 @@ package com.helloLottery.application.process.impl;
 import com.helloLottery.application.process.IActivityProcess;
 import com.helloLottery.application.process.req.DrawProcessReq;
 import com.helloLottery.application.process.res.DrawProcessResult;
+import com.helloLottery.application.process.res.RuleQuantificationCrowdResult;
 import com.helloLottery.domain.activity.model.req.PartakeReq;
 import com.helloLottery.domain.activity.model.res.PartakeResult;
 import com.helloLottery.domain.activity.model.vo.DrawOrderVO;
 import com.helloLottery.domain.activity.service.partake.IActivityPartake;
+import com.helloLottery.domain.rule.model.req.DecisionMatterReq;
+import com.helloLottery.domain.rule.model.res.EngineResult;
+import com.helloLottery.domain.rule.service.engine.EngineFilter;
 import com.helloLottery.domain.strategy.model.req.DrawReq;
 import com.helloLottery.domain.strategy.model.res.DrawResult;
 import com.helloLottery.domain.strategy.model.vo.DrawAwardVO;
@@ -25,6 +29,9 @@ import java.util.Map;
  */
 @Service
 public class ActivityProcessImpl  implements IActivityProcess {
+
+    @Resource(name = "ruleEngineHandle")
+    private EngineFilter engineFilter;
 
     @Resource
     private IDrawExec drawExec;
@@ -57,6 +64,20 @@ public class ActivityProcessImpl  implements IActivityProcess {
 
         // 返回结果
         return new DrawProcessResult(Constants.ResponseCode.SUCCESS.getCode(), Constants.ResponseCode.SUCCESS.getInfo(), drawAwardVO);
+    }
+
+    @Override
+    public RuleQuantificationCrowdResult doRuleQuantificationCrowd(DecisionMatterReq req) {
+        EngineResult engineResult = engineFilter.process(req);
+        if (!engineResult.isSuccess()) {
+            return new RuleQuantificationCrowdResult(Constants.ResponseCode.RULE_ERR.getCode(),Constants.ResponseCode.RULE_ERR.getInfo());
+        }
+
+        // 封装结果
+        RuleQuantificationCrowdResult ruleQuantificationCrowdResult = new RuleQuantificationCrowdResult(Constants.ResponseCode.SUCCESS.getCode(), Constants.ResponseCode.SUCCESS.getInfo());
+        ruleQuantificationCrowdResult.setActivityId(Long.valueOf(engineResult.getNodeValue()));
+
+        return ruleQuantificationCrowdResult;
     }
 
     private DrawOrderVO buildDrawOrderVO(DrawProcessReq req, Long strategyId, Long takeId, DrawAwardVO drawAwardVO) {

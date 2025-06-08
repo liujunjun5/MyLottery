@@ -2,8 +2,8 @@ package com.helloLottery.test;
 
 import com.alibaba.fastjson.JSON;
 import com.helloLottery.domain.support.ids.IIdGenerator;
-import com.helloLottery.infrastructure.dao.IUserStrategyExportDao;
-import com.helloLottery.infrastructure.po.UserStrategyExport;
+import com.helloLottery.interfaces.dao.IUserStrategyExportDao;
+import com.helloLottery.interfaces.po.UserStrategyExport;
 import com.hellolottery.common.Constants;
 import org.junit.Test;
 import org.junit.runner.RunWith;

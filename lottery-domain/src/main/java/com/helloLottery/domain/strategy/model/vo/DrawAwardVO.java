@@ -7,7 +7,10 @@ import java.util.Date;
  * @author lj
  */
 public class DrawAwardVO {
-
+    /**
+     * 用户ID
+     */
+    private String uId;
     /**
      * 奖品ID
      */
@@ -45,11 +48,25 @@ public class DrawAwardVO {
     public DrawAwardVO() {
     }
 
-    public DrawAwardVO(String awardId, Integer awardType, String awardName, String awardContent) {
+
+    public DrawAwardVO(String uId, String awardId, Integer awardType, String awardName, String awardContent) {
+        this.uId = uId;
         this.awardId = awardId;
         this.awardType = awardType;
         this.awardName = awardName;
         this.awardContent = awardContent;
+    }
+
+    public String getuId() {
+        return uId;
+    }
+
+    public void setuId(String uId) {
+        this.uId = uId;
+    }
+
+    public DrawAwardVO(String uId) {
+        this.uId = uId;
     }
 
     public String getAwardId() {

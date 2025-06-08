@@ -29,7 +29,9 @@ public class Constants {
 
         NO_UPDATE("0004", "SQL操作无更新"),
 
-        LOSING_DRAW("0005", "未中奖");
+        LOSING_DRAW("0005", "未中奖"),
+
+        RULE_ERR("D002", "量化人群规则执行失败");
 
         private String code;
         private String info;
