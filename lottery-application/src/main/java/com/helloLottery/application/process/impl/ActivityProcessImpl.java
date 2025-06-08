@@ -44,7 +44,7 @@ public class ActivityProcessImpl  implements IActivityProcess {
         }
 
         // 开始抽奖
-        DrawResult drawResult = drawExec.doDrawExec(new DrawReq(req.getuId(), partakeResult.getStrategyId(), String.valueOf(partakeResult.getTakeId())));
+        DrawResult drawResult = drawExec.doDrawExec(new DrawReq(req.getuId(), partakeResult.getStrategyId()));
         if (Constants.DrawState.FAIL.getCode().equals(drawResult.getDrawState())) {
             return new DrawProcessResult(Constants.ResponseCode.LOSING_DRAW.getCode(), Constants.ResponseCode.LOSING_DRAW.getInfo());
         }

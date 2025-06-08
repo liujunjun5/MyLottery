@@ -23,7 +23,7 @@ public interface IUserTakeActivityRepository {
      * @param partakeDate       领取时间
      * @return                  更新结果
      */
-    int subtractionLeftCount(Long activityId, String activityName, Integer takeCount, Integer userTakeLeftCount, String uId, Date partakeDate);
+    int subtractionLeftCount(Long activityId, String activityName, Integer takeCount, Integer userTakeLeftCount, String uId);
 
     /**
      * 参与活动
