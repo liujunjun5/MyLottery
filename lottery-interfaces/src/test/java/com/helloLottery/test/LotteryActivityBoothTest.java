@@ -30,7 +30,7 @@ public class LotteryActivityBoothTest {
     @Test
     public void test_doDraw() {
         DrawReq drawReq = new DrawReq();
-        drawReq.setuId("liujun");
+        drawReq.setuId("lj21j1");
         drawReq.setActivityId(100001L);
         DrawRes drawRes = lotteryActivityBooth.doDraw(drawReq);
         logger.info("请求参数：{}", JSON.toJSONString(drawReq));

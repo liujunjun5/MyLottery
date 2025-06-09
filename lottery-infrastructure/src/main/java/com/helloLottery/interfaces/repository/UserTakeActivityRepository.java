@@ -58,10 +58,11 @@ public class UserTakeActivityRepository implements IUserTakeActivityRepository {
         userTakeActivity.setTakeId(takeId);
         userTakeActivity.setTakeDate(takeDate);
         userTakeActivity.setActivityName(activityName);
+        userTakeActivity.setState(0);
         if (userTakeLeftCount == null) {
             userTakeActivity.setTakeCount(1);
         } else {
-            userTakeActivity.setTakeCount(takeCount - userTakeLeftCount);
+            userTakeActivity.setTakeCount(takeCount - userTakeLeftCount + 1);
         }
         userTakeActivity.setUuid(uId + "_" + activityId + "_" + userTakeActivity.getTakeCount());
 
