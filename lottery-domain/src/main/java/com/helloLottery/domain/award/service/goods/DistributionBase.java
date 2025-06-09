@@ -13,9 +13,8 @@ public class DistributionBase {
     @Resource
     private IAwardRepository awardRepository;
 
-    protected void updateUserAwardState(String uid, String orderId, String awardId, Integer awardState, String awardStateInfo) {
-        logger.info("更新用户中奖奖品发货状态uid:{}", uid);
-        // TODO
+    protected void updateUserAwardState(String uId, Long orderId, String awardId, Integer grantState) {
+        awardRepository.updateUserAwardState(uId, orderId, awardId, grantState);
     }
 
 }

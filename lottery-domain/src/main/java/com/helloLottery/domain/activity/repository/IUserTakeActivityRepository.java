@@ -20,7 +20,6 @@ public interface IUserTakeActivityRepository {
      * @param takeCount         活动个人可领取次数
      * @param userTakeLeftCount 活动个人剩余领取次数
      * @param uId               用户ID
-     * @param partakeDate       领取时间
      * @return                  更新结果
      */
     int subtractionLeftCount(Long activityId, String activityName, Integer takeCount, Integer userTakeLeftCount, String uId);
@@ -47,7 +46,29 @@ public interface IUserTakeActivityRepository {
      */
     UserTakeActivityVO queryNoConsumedTakeActivityOrder(Long activityId, String uId);
 
+    /**
+     * 锁定活动领取记录
+     *
+     * @param uId        用户ID
+     * @param activityId 活动ID
+     * @param takeId     领取ID
+     * @return 更新结果
+     */
     int lockTackActivity(String uId, Long activityId, Long takeId);
 
+    /**
+     * 保存抽奖信息
+     *
+     * @param drawOrder 中奖单
+     */
     void saveUserStrategyExport(DrawOrderVO drawOrder);
+
+    /**
+     * 更新发货单MQ状态
+     *
+     * @param uId     用户ID
+     * @param orderId 订单ID
+     * @param mqState MQ 发送状态
+     */
+    void updateInvoiceMqState(String uId, Long orderId, Integer mqState);
 }

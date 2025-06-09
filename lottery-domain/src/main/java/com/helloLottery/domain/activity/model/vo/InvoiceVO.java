@@ -1,52 +1,39 @@
-package com.helloLottery.domain.award.model.req;
+package com.helloLottery.domain.activity.model.vo;
 
 import com.helloLottery.domain.award.model.vo.ShippingAddress;
 
 /**
- * 奖品发货信息
- * @author: lj
+ * @author liujun
+ * @description: 中奖物品发货单，用于发送MQ消息，异步触达发货奖品给用户
+ * @date 2025/6/9 15:36
  */
-public class GoodsReq {
+public class InvoiceVO {
+
     /** 用户ID */
     private String uId;
 
-    /** 抽奖单号ID */
+    /** 抽奖单号 ID */
     private Long orderId;
 
     /** 奖品ID */
     private String awardId;
 
+    /**
+     * 奖品类型（1:文字描述、2:兑换码、3:优惠券、4:实物奖品）
+     */
+    private Integer awardType;
+
     /** 奖品名称 */
     private String awardName;
 
-    /** 奖品内容 */
+    /** 奖品内容「描述、奖品码、sku」 */
     private String awardContent;
 
-    /** 配送地址 */
+    /** 四级送货地址（只有实物类商品需要地址） */
     private ShippingAddress shippingAddress;
 
-    /** 拓展信息（定制奖品需要留言字段等） */
+    /** 扩展信息，用于一些个性商品发放所需要的透传字段内容 */
     private String extInfo;
-
-    public GoodsReq() {
-    }
-
-    public GoodsReq(String uId, Long orderId, String awardId, String awardName, String awardContent) {
-        this.uId = uId;
-        this.orderId = orderId;
-        this.awardId = awardId;
-        this.awardName = awardName;
-        this.awardContent = awardContent;
-    }
-
-    public GoodsReq(String uId, Long orderId, String awardId, String awardName, String awardContent, ShippingAddress shippingAddress) {
-        this.uId = uId;
-        this.orderId = orderId;
-        this.awardId = awardId;
-        this.awardName = awardName;
-        this.awardContent = awardContent;
-        this.shippingAddress = shippingAddress;
-    }
 
     public String getuId() {
         return uId;
@@ -70,6 +57,14 @@ public class GoodsReq {
 
     public void setAwardId(String awardId) {
         this.awardId = awardId;
+    }
+
+    public Integer getAwardType() {
+        return awardType;
+    }
+
+    public void setAwardType(Integer awardType) {
+        this.awardType = awardType;
     }
 
     public String getAwardName() {
@@ -102,5 +97,19 @@ public class GoodsReq {
 
     public void setExtInfo(String extInfo) {
         this.extInfo = extInfo;
+    }
+
+    @Override
+    public String toString() {
+        return "InvoiceVO{" +
+                "uId='" + uId + '\'' +
+                ", orderId=" + orderId +
+                ", awardId='" + awardId + '\'' +
+                ", awardType=" + awardType +
+                ", awardName='" + awardName + '\'' +
+                ", awardContent='" + awardContent + '\'' +
+                ", shippingAddress=" + shippingAddress +
+                ", extInfo='" + extInfo + '\'' +
+                '}';
     }
 }

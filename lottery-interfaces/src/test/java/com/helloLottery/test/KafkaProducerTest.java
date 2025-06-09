@@ -1,6 +1,8 @@
 package com.helloLottery.test;
 
 import com.helloLottery.application.mq.KafkaProducer;
+import com.helloLottery.domain.activity.model.vo.InvoiceVO;
+import com.hellolottery.common.Constants;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -29,9 +31,22 @@ public class KafkaProducerTest {
     @Test
     public void test_send() throws InterruptedException {
         // 循环发送消息
+
+
+        InvoiceVO invoice = new InvoiceVO();
+        invoice.setuId("fustack");
+        invoice.setOrderId(1444540456057864192L);
+        invoice.setAwardId("3");
+        invoice.setAwardType(Constants.AwardType.DESC.getCode());
+        invoice.setAwardName("Code");
+        invoice.setAwardContent("苹果电脑");
+        invoice.setShippingAddress(null);
+        invoice.setExtInfo(null);
+
+        kafkaProducer.sendLotteryInvoice(invoice);
+
         while (true) {
-            kafkaProducer.send("你好，我是Lottery 001");
-            Thread.sleep(3500);
+            Thread.sleep(10000);
         }
     }
 }

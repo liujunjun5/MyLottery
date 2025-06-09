@@ -9,6 +9,7 @@ import com.helloLottery.interfaces.dao.IUserTakeActivityDao;
 import com.helloLottery.interfaces.po.UserStrategyExport;
 import com.helloLottery.interfaces.po.UserTakeActivity;
 import com.helloLottery.interfaces.po.UserTakeActivityCount;
+import com.hellolottery.common.Constants;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -115,9 +116,18 @@ public class UserTakeActivityRepository implements IUserTakeActivityRepository {
         userStrategyExport.setAwardName(drawOrder.getAwardName());
         userStrategyExport.setAwardContent(drawOrder.getAwardContent());
         userStrategyExport.setUuid(String.valueOf(drawOrder.getTakeId()));
+        userStrategyExport.setMqState(Constants.MQState.INIT.getCode());
 
         userStrategyExportDao.insert(userStrategyExport);
     }
 
+    @Override
+    public void updateInvoiceMqState(String uId, Long orderId, Integer mqState) {
+        UserStrategyExport userStrategyExport = new UserStrategyExport();
+        userStrategyExport.setuId(uId);
+        userStrategyExport.setOrderId(orderId);
+        userStrategyExport.setMqState(mqState);
+        userStrategyExportDao.updateInvoiceMqState(userStrategyExport);
+    }
 
 }

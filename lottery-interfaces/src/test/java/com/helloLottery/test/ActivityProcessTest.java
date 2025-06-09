@@ -31,4 +31,15 @@ public class ActivityProcessTest {
         DrawProcessResult drawProcessResult = activityProcess.doDrawProcess(new DrawProcessReq("fustack", 100001L));
         logger.info("测试结果：{}", JSON.toJSONString(drawProcessResult));
     }
+
+    @Test
+    public void test_doDrawProcess_mq() {
+        DrawProcessReq req = new DrawProcessReq();
+        req.setuId("liujun");
+        req.setActivityId(100001L);
+        DrawProcessResult drawProcessResult = activityProcess.doDrawProcess(req);
+        logger.info("请求入参：{}", JSON.toJSONString(req));
+        logger.info("测试结果：{}", JSON.toJSONString(drawProcessResult));
+    }
+
 }
