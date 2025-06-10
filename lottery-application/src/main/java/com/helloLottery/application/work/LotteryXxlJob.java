@@ -98,7 +98,6 @@ public class LotteryXxlJob {
             return;
         }
 
-
         String[] params = jobParam.split(",");
         logger.info("开始补充异常MQ消息， params：{}", JSON.toJSONString(params));
 
