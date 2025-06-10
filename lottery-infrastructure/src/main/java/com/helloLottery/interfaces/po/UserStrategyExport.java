@@ -77,7 +77,7 @@ public class UserStrategyExport {
     /**
      * 消息发送状态（0未发送、1发送成功、2发送失败）
      */
-    private Integer MqState;
+    private Integer mqState;
 
     public Long getId() {
         return id;
@@ -208,11 +208,10 @@ public class UserStrategyExport {
     }
 
     public Integer getMqState() {
-        return MqState;
+        return mqState;
     }
 
     public void setMqState(Integer mqState) {
-        MqState = mqState;
+        this.mqState = mqState;
     }
-
 }

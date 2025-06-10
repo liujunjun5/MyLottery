@@ -4,6 +4,7 @@ import com.helloLottery.interfaces.po.UserStrategyExport;
 import com.mars.middleware.db.router.annotation.DBRouter;
 import com.mars.middleware.db.router.annotation.DBRouterStrategy;
 import org.apache.ibatis.annotations.Mapper;
+import java.util.List;
 
 /**
  * @author liujun
@@ -42,5 +43,12 @@ public interface IUserStrategyExportDao {
      */
     @DBRouter
     void updateInvoiceMqState(UserStrategyExport userStrategyExport);
+
+    /**
+     * @description: 扫描MQ状态，将MQ发送失败或者长时间没处理的订单获取出来
+     * @author liujun
+     * @date 2025/6/10 10:23
+     */
+    List<UserStrategyExport> scanInvoiceMqState();
 
 }

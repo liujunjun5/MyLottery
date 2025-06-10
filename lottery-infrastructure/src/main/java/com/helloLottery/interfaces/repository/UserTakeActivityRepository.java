@@ -1,6 +1,7 @@
 package com.helloLottery.interfaces.repository;
 
 import com.helloLottery.domain.activity.model.vo.DrawOrderVO;
+import com.helloLottery.domain.activity.model.vo.InvoiceVO;
 import com.helloLottery.domain.activity.model.vo.UserTakeActivityVO;
 import com.helloLottery.domain.activity.repository.IUserTakeActivityRepository;
 import com.helloLottery.interfaces.dao.IUserStrategyExportDao;
@@ -13,7 +14,9 @@ import com.hellolottery.common.Constants;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author liujun
@@ -131,4 +134,22 @@ public class UserTakeActivityRepository implements IUserTakeActivityRepository {
         userStrategyExportDao.updateInvoiceMqState(userStrategyExport);
     }
 
+    @Override
+    public List<InvoiceVO> scanInvoiceMqState() {
+        // 查询发送MQ失败和超时30分钟，未发送MQ的数据
+        List<UserStrategyExport> userStrategyExportList = userStrategyExportDao.scanInvoiceMqState();
+        // 转换对象
+        List<InvoiceVO> invoiceVOList = new ArrayList<>(userStrategyExportList.size());
+        for (UserStrategyExport userStrategyExport : userStrategyExportList) {
+            InvoiceVO invoiceVO = new InvoiceVO();
+            invoiceVO.setuId(userStrategyExport.getuId());
+            invoiceVO.setOrderId(userStrategyExport.getOrderId());
+            invoiceVO.setAwardId(userStrategyExport.getAwardId());
+            invoiceVO.setAwardType(userStrategyExport.getAwardType());
+            invoiceVO.setAwardName(userStrategyExport.getAwardName());
+            invoiceVO.setAwardContent(userStrategyExport.getAwardContent());
+            invoiceVOList.add(invoiceVO);
+        }
+        return invoiceVOList;
+    }
 }

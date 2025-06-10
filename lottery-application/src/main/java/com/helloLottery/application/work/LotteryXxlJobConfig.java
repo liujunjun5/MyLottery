@@ -75,3 +75,4 @@ public class LotteryXxlJobConfig {
  *          String ip_ = inetUtils.findFirstNonLoopbackHostInfo().getIpAddress();
  **********************************************************************************************/
 
+}
