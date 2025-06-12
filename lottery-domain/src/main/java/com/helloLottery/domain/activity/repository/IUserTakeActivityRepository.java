@@ -1,5 +1,6 @@
 package com.helloLottery.domain.activity.repository;
 
+import com.helloLottery.domain.activity.model.vo.ActivityPartakeRecordVO;
 import com.helloLottery.domain.activity.model.vo.DrawOrderVO;
 import com.helloLottery.domain.activity.model.vo.InvoiceVO;
 import com.helloLottery.domain.activity.model.vo.UserTakeActivityVO;
@@ -80,4 +81,6 @@ public interface IUserTakeActivityRepository {
      * @return 发货单
      */
     List<InvoiceVO> scanInvoiceMqState();
+
+    void updateActivityStock(ActivityPartakeRecordVO activityPartakeRecordVO);
 }

@@ -15,16 +15,29 @@ public class ActivityBillVO {
     /**活动id*/
     private Long activityId;
 
-    /**活动名称*/
+    /**
+     * 活动名称
+     */
     private String activityName;
 
-    /**开始时间*/
+    /**
+     * 开始时间
+     */
     private Date beginDateTime;
 
-    /**结束时间*/
+    /**
+     * 结束时间
+     */
     private Date endDateTime;
 
-    /**剩余库存*/
+    /**
+     * 库存
+     */
+    private Integer stockCount;
+
+    /**
+     * 剩余库存
+     */
     private Integer stockSurplusCount;
 
     /**
@@ -33,7 +46,9 @@ public class ActivityBillVO {
      */
     private Integer state;
 
-    /** 策略ID */
+    /**
+     * 策略ID
+     */
     private Long strategyId;
 
     /** 每人可参与次数 */
@@ -80,6 +95,14 @@ public class ActivityBillVO {
 
     public void setEndDateTime(Date endDateTime) {
         this.endDateTime = endDateTime;
+    }
+
+    public Integer getStockCount() {
+        return stockCount;
+    }
+
+    public void setStockCount(Integer stockCount) {
+        this.stockCount = stockCount;
     }
 
     public Integer getStockSurplusCount() {

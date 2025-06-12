@@ -31,7 +31,9 @@ public class Constants {
 
         LOSING_DRAW("0005", "未中奖"),
 
-        RULE_ERR("D002", "量化人群规则执行失败");
+        RULE_ERR("D002", "量化人群规则执行失败"),
+
+        NOT_CONSUMED_TAKE("D003", "未消费活动领取记录");
 
         private String code;
         private String info;
@@ -392,6 +394,27 @@ public class Constants {
          * 枚举
          */
         public static final int ENUM = 6;
+    }
+
+    /**
+     * 缓存 Key
+     */
+    public static final class RedisKey {
+
+        // 抽奖活动库存 Key
+        private static final String LOTTERY_ACTIVITY_STOCK_COUNT = "lottery_activity_stock_count_";
+
+        public static String KEY_LOTTERY_ACTIVITY_STOCK_COUNT(Long activityId) {
+            return LOTTERY_ACTIVITY_STOCK_COUNT + activityId;
+        }
+
+        // 抽奖活动库存锁 Key
+        private static final String LOTTERY_ACTIVITY_STOCK_COUNT_TOKEN = "lottery_activity_stock_count_token_";
+
+        public static String KEY_LOTTERY_ACTIVITY_STOCK_COUNT_TOKEN(Long activityId, Integer stockUsedCount) {
+            return LOTTERY_ACTIVITY_STOCK_COUNT_TOKEN + activityId + "_" + stockUsedCount;
+        }
+
     }
 
 }

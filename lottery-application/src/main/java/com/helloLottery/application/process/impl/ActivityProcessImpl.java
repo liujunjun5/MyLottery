@@ -7,6 +7,7 @@ import com.helloLottery.application.process.res.DrawProcessResult;
 import com.helloLottery.application.process.res.RuleQuantificationCrowdResult;
 import com.helloLottery.domain.activity.model.req.PartakeReq;
 import com.helloLottery.domain.activity.model.res.PartakeResult;
+import com.helloLottery.domain.activity.model.vo.ActivityPartakeRecordVO;
 import com.helloLottery.domain.activity.model.vo.DrawOrderVO;
 import com.helloLottery.domain.activity.model.vo.InvoiceVO;
 import com.helloLottery.domain.activity.service.partake.IActivityPartake;
@@ -57,10 +58,23 @@ public class ActivityProcessImpl  implements IActivityProcess {
 
     @Override
     public DrawProcessResult doDrawProcess(DrawProcessReq req) {
+
         // 领取活动
         PartakeResult partakeResult = activityPartake.doPartake(new PartakeReq(req.getuId(), req.getActivityId()));
-        if (!partakeResult.getCode().equals(Constants.ResponseCode.SUCCESS.getCode())) {
+
+        if (!Constants.ResponseCode.SUCCESS.getCode().equals(partakeResult.getCode()) && !Constants.ResponseCode.NOT_CONSUMED_TAKE.getCode().equals(partakeResult.getCode())) {
             return new DrawProcessResult(partakeResult.getCode(), partakeResult.getInfo());
+        }
+
+        // 首次领取活动 发送MQ消息
+        if (Constants.ResponseCode.SUCCESS.getCode().equals(partakeResult.getCode())) {
+            ActivityPartakeRecordVO activityPartakeRecord = new ActivityPartakeRecordVO();
+            activityPartakeRecord.setuId(req.getuId());
+            activityPartakeRecord.setActivityId(req.getActivityId());
+            activityPartakeRecord.setStockCount(partakeResult.getStockCount());
+            activityPartakeRecord.setStockSurplusCount(partakeResult.getStockSurplusCount());
+            // 发送 MQ 消息
+            kafkaProducer.sendLotteryActivityPartakeRecord(activityPartakeRecord);
         }
 
         // 开始抽奖

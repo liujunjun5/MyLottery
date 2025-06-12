@@ -50,4 +50,6 @@ public interface IActivityDao {
      * @return 待处理的活动集合
      */
     List<Activity> scanToDoActivityList(Long id);
+
+    void updateActivityStock(Activity activity);
 }

@@ -1,15 +1,13 @@
 package com.helloLottery.interfaces.util;
 
 import org.springframework.data.redis.core.BoundListOperations;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -575,7 +573,7 @@ public class RedisUtil {
      * @param pattern
      * @return
      */
-    public Set keys(String pattern) {
+    public Set<String> keys(String pattern) {
         return redisTemplate.keys(pattern);
     }
 
@@ -635,4 +633,33 @@ public class RedisUtil {
         return boundValueOperations.rightPop();
     }
 
+    /**
+     * @description: 尝试获取锁 如果还没有被占用直接获取 如果已经被获取检查是否到期 到期了尝试获取 最后返回获取结果
+     * @author liujun
+     * @date 2025/6/12 16:07
+     */
+    public boolean setNx(String key, Long lockExpireMils) {
+        return (boolean) redisTemplate.execute((RedisCallback) connection -> {
+            //获取时间毫秒值
+            long expireAt = System.currentTimeMillis() + lockExpireMils + 1;
+            //获取锁
+            Boolean acquire = connection.setNX(key.getBytes(), String.valueOf(expireAt).getBytes());
+            if (acquire) {
+                return true;
+            } else {
+                byte[] bytes = connection.get(key.getBytes());
+                // 非空判断
+                if (Objects.nonNull(bytes) && bytes.length > 0) {
+                    long expireTime = Long.parseLong(new String(bytes));
+                    // 如果锁已经过期
+                    if (expireTime < System.currentTimeMillis()) {
+                        // 重新加锁，防止死锁
+                        byte[] set = connection.getSet(key.getBytes(), String.valueOf(System.currentTimeMillis() + lockExpireMils + 1).getBytes());
+                        return Long.parseLong(new String(set)) < System.currentTimeMillis();
+                    }
+                }
+            }
+            return false;
+        });
+    }
 }

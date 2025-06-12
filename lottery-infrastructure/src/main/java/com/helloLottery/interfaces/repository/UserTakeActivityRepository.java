@@ -1,16 +1,22 @@
 package com.helloLottery.interfaces.repository;
 
+import com.helloLottery.domain.activity.model.vo.ActivityPartakeRecordVO;
 import com.helloLottery.domain.activity.model.vo.DrawOrderVO;
 import com.helloLottery.domain.activity.model.vo.InvoiceVO;
 import com.helloLottery.domain.activity.model.vo.UserTakeActivityVO;
+import com.helloLottery.domain.activity.repository.IActivityRepository;
 import com.helloLottery.domain.activity.repository.IUserTakeActivityRepository;
+import com.helloLottery.interfaces.dao.IActivityDao;
 import com.helloLottery.interfaces.dao.IUserStrategyExportDao;
 import com.helloLottery.interfaces.dao.IUserTakeActivityCountDao;
 import com.helloLottery.interfaces.dao.IUserTakeActivityDao;
+import com.helloLottery.interfaces.po.Activity;
 import com.helloLottery.interfaces.po.UserStrategyExport;
 import com.helloLottery.interfaces.po.UserTakeActivity;
 import com.helloLottery.interfaces.po.UserTakeActivityCount;
 import com.hellolottery.common.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -25,6 +31,11 @@ import java.util.List;
  */
 @Component
 public class UserTakeActivityRepository implements IUserTakeActivityRepository {
+
+    private Logger logger = LoggerFactory.getLogger(UserTakeActivityRepository.class);
+
+    @Resource
+    private IActivityDao activityDao;
 
     @Resource
     private IUserTakeActivityCountDao userTakeActivityCountDao;
@@ -152,4 +163,13 @@ public class UserTakeActivityRepository implements IUserTakeActivityRepository {
         }
         return invoiceVOList;
     }
+
+    @Override
+    public void updateActivityStock(ActivityPartakeRecordVO activityPartakeRecordVO) {
+        Activity activity = new Activity();
+        activity.setActivityId(activityPartakeRecordVO.getActivityId());
+        activity.setStockSurplusCount(activityPartakeRecordVO.getStockSurplusCount());
+        activityDao.updateActivityStock(activity);
+    }
+
 }

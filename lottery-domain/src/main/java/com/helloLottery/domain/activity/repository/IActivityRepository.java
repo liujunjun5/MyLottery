@@ -1,6 +1,7 @@
 package com.helloLottery.domain.activity.repository;
 
 import com.helloLottery.domain.activity.model.req.PartakeReq;
+import com.helloLottery.domain.activity.model.res.StockResult;
 import com.helloLottery.domain.activity.model.vo.*;
 import com.hellolottery.common.Constants;
 
@@ -79,4 +80,18 @@ public interface IActivityRepository {
      * @return 待处理的活动集合
      */
     List<ActivityVO> scanToDoActivityList(Long id);
+
+    /**
+     * @description: 扣减活动库存
+     * @author liujun
+     * @date 2025/6/12 16:53
+     */
+    StockResult subtractionActivityStockByRedis(String uId, Long activityId, Integer stockCount);
+
+    /**
+     * @description: 对出现异常的进行库存恢复
+     * @author liujun
+     * @date 2025/6/12 16:53
+     */
+    void recoverActivityCacheStockByRedis(Long activityId, String tokenKey, String code);
 }

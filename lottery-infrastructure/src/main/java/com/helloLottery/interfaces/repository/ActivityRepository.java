@@ -1,11 +1,15 @@
 package com.helloLottery.interfaces.repository;
 
 import com.helloLottery.domain.activity.model.req.PartakeReq;
+import com.helloLottery.domain.activity.model.res.StockResult;
 import com.helloLottery.domain.activity.model.vo.*;
 import com.helloLottery.domain.activity.repository.IActivityRepository;
 import com.helloLottery.interfaces.dao.*;
 import com.helloLottery.interfaces.po.*;
+import com.helloLottery.interfaces.util.RedisUtil;
 import com.hellolottery.common.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +25,8 @@ import java.util.List;
 @Component
 public class ActivityRepository implements IActivityRepository {
 
+    private Logger logger = LoggerFactory.getLogger(ActivityRepository.class);
+
     @Resource
     private IActivityDao activityDao;
     @Resource
@@ -32,11 +38,17 @@ public class ActivityRepository implements IActivityRepository {
     @Resource
     private IUserTakeActivityCountDao userTakeActivityCountDao;
 
+    @Resource
+    private RedisUtil redisUtil;
+
     @Override
     public void addActivity(ActivityVO activity) {
         Activity req = new Activity();
         BeanUtils.copyProperties(activity, req);
         activityDao.insert(req);
+
+        // 设置活动库存 KEY
+        redisUtil.set(Constants.RedisKey.KEY_LOTTERY_ACTIVITY_STOCK_COUNT(activity.getActivityId()), 0);
     }
 
     @Override
@@ -81,6 +93,8 @@ public class ActivityRepository implements IActivityRepository {
         // 查询活动信息
         Activity activity = activityDao.queryActivityById(req.getActivityId());
 
+        Object usedStockCountObj =  redisUtil.get(Constants.RedisKey.KEY_LOTTERY_ACTIVITY_STOCK_COUNT(req.getActivityId()));
+
         // 查询领取次数
         UserTakeActivityCount userTakeActivityCountReq = new UserTakeActivityCount();
         userTakeActivityCountReq.setuId(req.getuId());
@@ -95,7 +109,8 @@ public class ActivityRepository implements IActivityRepository {
         activityBillVO.setBeginDateTime(activity.getBeginDateTime());
         activityBillVO.setEndDateTime(activity.getEndDateTime());
         activityBillVO.setTakeCount(activity.getTakeCount());
-        activityBillVO.setStockSurplusCount(activity.getStockSurplusCount());
+        activityBillVO.setStockCount(activity.getStockCount());
+        activityBillVO.setStockSurplusCount(null == usedStockCountObj ? activity.getStockSurplusCount() : activity.getStockCount() - Integer.parseInt(String.valueOf(usedStockCountObj)));
         activityBillVO.setStrategyId(activity.getStrategyId());
         activityBillVO.setState(activity.getState());
 
@@ -125,5 +140,32 @@ public class ActivityRepository implements IActivityRepository {
             activityVOList.add(activityVO);
         }
         return activityVOList;
+    }
+
+    @Override
+    public StockResult subtractionActivityStockByRedis(String uId, Long activityId, Integer stockCount) {
+        // 获取活动库存 key
+        String stockKey = Constants.RedisKey.KEY_LOTTERY_ACTIVITY_STOCK_COUNT(activityId);
+        // 滑动增加当前 key
+        Integer usedStock = (int) redisUtil.incr(stockKey, 1);
+        // 如果超出总库存 
+        if (usedStock > stockCount) {
+            redisUtil.decr(stockKey, 1);
+            return new StockResult(Constants.ResponseCode.UN_ERROR.getCode(), Constants.ResponseCode.UN_ERROR.getInfo());
+        }
+        // 加锁
+        String stockTokenKey = Constants.RedisKey.KEY_LOTTERY_ACTIVITY_STOCK_COUNT_TOKEN(activityId, usedStock);
+        boolean isSuccess = redisUtil.setNx(stockTokenKey, 359L);
+        if (!isSuccess) {
+            logger.info("抽奖活动{}用户秒杀{}扣减库存，分布式锁失败：{}", activityId, uId, stockTokenKey);
+            return new StockResult(Constants.ResponseCode.UN_ERROR.getCode(), Constants.ResponseCode.UN_ERROR.getInfo());
+        }
+        return new StockResult(Constants.ResponseCode.SUCCESS.getCode(), Constants.ResponseCode.SUCCESS.getInfo(), stockTokenKey, stockCount - usedStock);
+    }
+
+    @Override
+    public void recoverActivityCacheStockByRedis(Long activityId, String tokenKey, String code) {
+        // 删除分布式锁 Key
+        redisUtil.del(tokenKey);
     }
 }

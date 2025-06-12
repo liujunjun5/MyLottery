@@ -2,6 +2,7 @@ package com.helloLottery.domain.activity.service.partake;
 
 import com.helloLottery.domain.activity.model.req.PartakeReq;
 import com.helloLottery.domain.activity.model.res.PartakeResult;
+import com.helloLottery.domain.activity.model.vo.ActivityPartakeRecordVO;
 import com.helloLottery.domain.activity.model.vo.DrawOrderVO;
 import com.helloLottery.domain.activity.model.vo.InvoiceVO;
 import com.hellolottery.common.Result;
@@ -44,4 +45,11 @@ public interface IActivityPartake {
      * @return 发货单
      */
     List<InvoiceVO> scanInvoiceMqState(int dbCount, int tbCount);
+
+    /**
+     * 更新活动库存
+     *
+     * @param activityPartakeRecordVO   活动领取记录
+     */
+    void updateActivityStock(ActivityPartakeRecordVO activityPartakeRecordVO);
 }
