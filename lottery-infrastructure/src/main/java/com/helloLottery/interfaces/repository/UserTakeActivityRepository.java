@@ -4,7 +4,6 @@ import com.helloLottery.domain.activity.model.vo.ActivityPartakeRecordVO;
 import com.helloLottery.domain.activity.model.vo.DrawOrderVO;
 import com.helloLottery.domain.activity.model.vo.InvoiceVO;
 import com.helloLottery.domain.activity.model.vo.UserTakeActivityVO;
-import com.helloLottery.domain.activity.repository.IActivityRepository;
 import com.helloLottery.domain.activity.repository.IUserTakeActivityRepository;
 import com.helloLottery.interfaces.dao.IActivityDao;
 import com.helloLottery.interfaces.dao.IUserStrategyExportDao;
@@ -65,7 +64,7 @@ public class UserTakeActivityRepository implements IUserTakeActivityRepository {
     }
 
     @Override
-    public void takeActivity(Long activityId, String activityName, Integer takeCount, Integer userTakeLeftCount, String uId, Date takeDate, Long takeId) {
+    public void takeActivity(Long activityId, String activityName, Long strategyId, Integer takeCount, Integer userTakeLeftCount, String uId, Date takeDate, Long takeId) {
         UserTakeActivity userTakeActivity = new UserTakeActivity();
         userTakeActivity.setActivityId(activityId);
         userTakeActivity.setuId(uId);
@@ -78,6 +77,7 @@ public class UserTakeActivityRepository implements IUserTakeActivityRepository {
         } else {
             userTakeActivity.setTakeCount(takeCount - userTakeLeftCount + 1);
         }
+        userTakeActivity.setStrategyId(strategyId);
         userTakeActivity.setUuid(uId + "_" + activityId + "_" + userTakeActivity.getTakeCount());
 
         userTakeActivityDao.insert(userTakeActivity);

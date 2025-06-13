@@ -103,7 +103,7 @@ public class ActivityPartakeImpl extends BaseActivityPartake {
 
                     // 插入活动参与次数
 //                long takeId = idGeneratorMap.get(Constants.Ids.SnowFlake).nextId();
-                    userTakeActivityRepository.takeActivity(bill.getActivityId(), bill.getActivityName(), bill.getTakeCount(), bill.getUserTakeLeftCount(), req.getuId(), req.getPartakeDate(), takeId);
+                    userTakeActivityRepository.takeActivity(bill.getActivityId(), bill.getActivityName(), bill.getStrategyId(), bill.getTakeCount(), bill.getUserTakeLeftCount(), req.getuId(), req.getPartakeDate(), takeId);
 
                 } catch (DuplicateKeyException e) {
                     status.setRollbackOnly();

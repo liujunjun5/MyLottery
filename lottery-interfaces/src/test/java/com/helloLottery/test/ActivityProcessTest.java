@@ -28,7 +28,7 @@ public class ActivityProcessTest {
 
     @Test
     public void test_doDrawProcess() {
-        DrawProcessResult drawProcessResult = activityProcess.doDrawProcess(new DrawProcessReq("fustack", 100001L));
+        DrawProcessResult drawProcessResult = activityProcess.doDrawProcess(new DrawProcessReq("lh", 100001L));
         logger.info("测试结果：{}", JSON.toJSONString(drawProcessResult));
     }
 
